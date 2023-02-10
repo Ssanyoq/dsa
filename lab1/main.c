@@ -40,9 +40,19 @@ int main() {
         }
         arr[i] = (int *)safe_malloc(m[i] * sizeof(int));
         for (int j = 0; j < m[i]; j++) {
-            if (input_d(&(arr[i][j])) == -1) {
+            int out;
+            do
+            {
+                out = scanf("%d", &(arr[i][j]));
+                if (out == -1) {
                 return 1;
-            }
+                }
+                if (out != 1) {
+                    printf("Bad input, try again: ");
+                }
+                clear_buff();
+            } while (out != 1);
+            
         }
     }
     printf("\n\nGiven matrix:\n");
@@ -53,7 +63,7 @@ int main() {
         arr[i] = &(arr[i][cur]);
         m[i] -= cur;
     }
-    printf("\n\n");
+    printf("\n\nNew matrix:\n");
     print_arr(arr, n, m);
     free_arr(arr, n);
     return 0;
