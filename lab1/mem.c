@@ -9,3 +9,9 @@ void *safe_malloc(size_t size) {
     }
     return ptr;
 }
+
+void free_arr(int **arr, int n) {
+    for (int i = 0; i < n; i++) {
+        free(arr[i]);
+    }
+}
