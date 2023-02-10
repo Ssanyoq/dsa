@@ -40,14 +40,17 @@ int main() {
     }
     printf("\n\nGiven matrix:\n");
     print_arr(arr, n, m);
+    
 
+    int **new_arr = arr;
     for (int i = 0; i < n; i++) {
         int cur = min_index(arr[i], m[i]);
-        arr[i] = &(arr[i][cur]);
+        new_arr[i] = &(arr[i][cur]);
         m[i] -= cur;
     }
     printf("\n\n");
-    print_arr(arr, n, m);
+    print_arr(new_arr, n, m);
     free_arr(arr, n);
+    free(m);
     return 0;
 }
