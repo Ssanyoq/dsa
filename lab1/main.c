@@ -3,6 +3,7 @@
 
 #include "print.h"
 #include "mem.h"
+#include "istream.h"
 
 int min_index(int *arr, int len) {
     int min;
@@ -24,7 +25,9 @@ int main() {
     int n;
     int *m;
     printf("Input rows amount: ");
-    scanf("%d", &n);
+    if (input_u(&n) == -1) {
+        return 1;
+    }
     arr = (int **)safe_malloc(n * sizeof(int *));
     m = (int *)safe_malloc(n * sizeof(int));
     if (arr == NULL || m == NULL) {
@@ -32,10 +35,14 @@ int main() {
     }
     printf("Input elements amount and then this amount of elements %d times: \n", n);
     for (int i = 0; i < n; i++) {
-        scanf("%d", &(m[i]));
+        if (input_u(&(m[i])) == -1) {
+            return 1;
+        }
         arr[i] = (int *)safe_malloc(m[i] * sizeof(int));
         for (int j = 0; j < m[i]; j++) {
-            scanf("%d", &(arr[i][j]));
+            if (input_d(&(arr[i][j])) == -1) {
+                return 1;
+            }
         }
     }
     printf("\n\nGiven matrix:\n");
