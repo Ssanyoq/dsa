@@ -4,6 +4,21 @@
 #include "print.h"
 #include "mem.h"
 
+int min_index(int *arr, int len) {
+    int min;
+    int min_ind = -1;
+    for (int i = 0; i < len; i++) {
+        if (min_ind == -1) {
+            min = arr[i];
+            min_ind = i;
+        } else if (arr[i] < min) {
+            min = arr[i];
+            min_ind = i;
+        }
+    }
+    return min_ind;
+}
+
 int main() {
     int **arr;
     int n;
@@ -23,8 +38,16 @@ int main() {
             scanf("%d", &(arr[i][j]));
         }
     }
-    printf("\n\n");
+    printf("\n\nGiven matrix:\n");
     print_arr(arr, n, m);
 
+    for (int i = 0; i < n; i++) {
+        int cur = min_index(arr[i], m[i]);
+        arr[i] = &(arr[i][cur]);
+        m[i] -= cur;
+    }
+    printf("\n\n");
+    print_arr(arr, n, m);
+    free_arr(arr, n);
     return 0;
 }
