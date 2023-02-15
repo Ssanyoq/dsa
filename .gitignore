@@ -54,3 +54,5 @@ dkms.conf
 
 # vim
 .swp
+
+sem/
