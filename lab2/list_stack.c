@@ -4,7 +4,7 @@
 #include "stdio.h"
 
 
-Stack *init(size_t len) {
+Stack *init(size_t len) { // top -> next -> next -> next -> NULL(bottom of a stack)
     Stack *s = (Stack *)malloc(len * sizeof(Item));
     Item *first = (Item *)malloc(sizeof(Item));
     first->value = 0;
@@ -20,6 +20,29 @@ Stack *init(size_t len) {
     last->next = NULL;
 
     return s;
+}
+
+Stack *push(Stack *s, Item *val) {
+    val->next = s->head;
+    s->head = val;
+    return s;
+}
+
+Item pop(Stack **s) {
+    Item val = (*s)->head;
+    (*s)->head = (*s)->head->next;
+    return val;
+}
+
+void free_stack(Stack *s) {
+    Item *cur = s->head;
+    Item *next = NULL;
+    while (cur != NULL) {
+        next = cur->next;
+        free(cur);
+        cur = next;
+    }
+    free(s);
 }
 
 void print_stack(Stack *a) {
