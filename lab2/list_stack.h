@@ -15,9 +15,9 @@ typedef struct Stack
 
 Stack *init(size_t len);
 
-Stack *push(Stack *s, Item *val);
+int push(Stack *s, Item *val);
 
-Item pop(Stack *s);
+Item *pop(Stack *s);
 
 void free_stack(Stack *s);
 
