@@ -1,0 +1,14 @@
+CC = gcc
+CFLAGS = 
+DEBUGFLAGS = -g
+SOURCES = main.c
+LISTSOURCES = list_stack.c
+VECTORSOURCES = vector_stack.c
+EXENAME = e
+EXEDIR = build
+
+l:
+	$(CC) $(SOURCES) $(LISTSOURCES) $(CFLAGS) -o $(EXEDIR)/$(EXENAME) -D LIST
+
+v:
+	$(CC) $(SOURCES) $(VECTORSOURCES) $(CFLAGS) -o $(EXEDIR)/$(EXENAME) -D VECTOR
