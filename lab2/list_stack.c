@@ -5,7 +5,7 @@
 
 
 Stack *init(size_t len) { // top -> next -> next -> next -> NULL(bottom of a stack)
-    Stack *s = (Stack *)malloc(len * sizeof(Item));
+    Stack *s = (Stack *)malloc(sizeof(Stack));
     Item *first = (Item *)malloc(sizeof(Item));
     first->value = 0;
     s->head = first;
@@ -45,7 +45,7 @@ void free_stack(Stack *s) {
     free(s);
 }
 
-void print_stack(Stack *a) {
+void print_stack(Stack *a) { // for testing only, prints stack backwards
     Item *cur = a->head;
     while (cur != NULL)
     {
@@ -55,7 +55,7 @@ void print_stack(Stack *a) {
     printf("\n");
 }
 
-int main() {
+int main() { // for testing only, creates and prints an empty stack
     Stack *s = init(100);
     print_stack(s);
 }
