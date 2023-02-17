@@ -35,13 +35,3 @@ void free_stack(Stack *s) {
     }
     free(s);
 }
-
-void print_stack(Stack *a) { // for testing only, prints stack backwards
-    Item *cur = a->head;
-    while (cur != NULL)
-    {
-        printf("%d ", cur->value);
-        cur = cur->next;
-    }
-    printf("\n");
-}

@@ -5,7 +5,9 @@
 
 typedef struct Item
 {
-    int val;
+    char *id;
+    int ta;
+    int ts;
 } Item;
 
 typedef struct Stack
@@ -21,7 +23,5 @@ int push(Stack *s, Item *val);
 Item *pop(Stack *s);
 
 void free_stack(Stack *s);
-
-void print_stack(Stack *a); // debug purposes
 
 #endif

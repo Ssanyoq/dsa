@@ -4,7 +4,9 @@
 #include <stddef.h>
 
 typedef struct Item {
-    int value;
+    char *id;
+    int ta;
+    int ts;
     struct Item *next;
 } Item;
 
@@ -20,7 +22,5 @@ int push(Stack *s, Item *val);
 Item *pop(Stack *s);
 
 void free_stack(Stack *s);
-
-void print_stack(Stack *a); // debug purposes
 
 #endif
