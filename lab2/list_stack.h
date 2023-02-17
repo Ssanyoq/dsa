@@ -21,6 +21,6 @@ Item *pop(Stack *s);
 
 void free_stack(Stack *s);
 
-void print_stack(Stack *a); // debug purpose
+void print_stack(Stack *a); // debug purposes
 
 #endif
