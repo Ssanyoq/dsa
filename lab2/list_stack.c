@@ -1,7 +1,6 @@
 #include "list_stack.h"
-#include "stdlib.h"
-#include "stddef.h"
-#include "stdio.h"
+#include <stdlib.h>
+#include <stdio.h>
 
 
 Stack *init(size_t len) { // top -> next -> next -> next -> NULL(bottom of a stack)
@@ -28,10 +27,10 @@ Stack *push(Stack *s, Item *val) {
     return s;
 }
 
-Item pop(Stack **s) {
-    Item val = (*s)->head;
-    (*s)->head = (*s)->head->next;
-    return val;
+Item pop(Stack *s) {
+    Item *val = s->head;
+    s->head = s->head->next;
+    return *val;
 }
 
 void free_stack(Stack *s) {
@@ -53,9 +52,4 @@ void print_stack(Stack *a) { // for testing only, prints stack backwards
         cur = cur->next;
     }
     printf("\n");
-}
-
-int main() { // for testing only, creates and prints an empty stack
-    Stack *s = init(100);
-    print_stack(s);
 }
