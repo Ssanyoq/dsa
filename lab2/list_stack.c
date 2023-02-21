@@ -13,7 +13,7 @@ Stack *init(size_t len) { // top -> next -> next -> next -> NULL(bottom of a sta
 int push(Stack *s, Item *val) {
     val->next = s->head;
     s->head = val;
-    return s;
+    return 0;
 }
 
 Item *pop(Stack *s) {

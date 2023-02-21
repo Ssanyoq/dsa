@@ -24,4 +24,6 @@ Item *pop(Stack *s);
 
 void free_stack(Stack *s);
 
+Stack *input_stack(Stack *s);
+
 #endif
