@@ -1,6 +1,9 @@
 #include "vector_stack.h"
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
+#include <readline/readline.h>
+#define LIMIT 1000
 
 Stack *init(size_t len) {
     Stack *s = (Stack *)malloc(sizeof(Stack));
@@ -9,14 +12,27 @@ Stack *init(size_t len) {
     return s;
 }
 
-Stack *input_stack(Stack *s) {
-    char inp[1000];
-    int out;
-    while (out = scanf("%s", inp) != -1)
+Stack *input_stack(Stack *s, int *stands) {
+    Stack s[LIMIT];    
+    char *str;
+    str = readline("");
+    *stands = -1;    
+    while (str != NULL)
     {
-        printf("%s\n", inp);
+        char *word = strtok(str, " \t");
+        while (str != NULL) {
+            if (*stands == -1) {
+                char *tmp;
+                *stands = strtol(word, tmp, 10);
+                continue;
+            }
+
+            Item new;
+            char *part = strtok(word, "/");
+            new.id = part;
+            part = strtok()
+        }
     }
-    
 }
 
 int push(Stack *s, Item *val) {
@@ -37,3 +53,6 @@ void free_stack(Stack *s) {
     free(s->arr);
     free(s);
 }   
+
+void print_stack(Stack *s) {
+}
