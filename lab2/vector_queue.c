@@ -1,5 +1,6 @@
 #include "vector_queue.h"
 #include "queue.h"
+#include <stdlib.h>
 
 int push(Queue *q, Item *val) {
     if (q->tail == q->head - 1) {
@@ -19,7 +20,7 @@ int pop(Queue *q, Item *val) {
     return CORRECT_CODE;
 }
 
-Stack *init(int len) {
+Queue *init(int len) {
     Queue *q = (Queue *)malloc(sizeof(Queue));
     q->arr = (Item *)malloc(len * sizeof(Item));
     q->head = 0;

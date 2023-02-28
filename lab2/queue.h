@@ -2,10 +2,10 @@
 #define CORRECT_CODE 0
 
 typedef struct Item Item;
-typedef struct Stack Stack;
+typedef struct Queue Queue;
 
-int push(Stack *s, Item *val);
+int push(Queue *q, Item *val);
 
-int pop(Stack *s, Item *val);
+int pop(Queue *q, Item *val);
 
-Stack *init(int len);
+Queue *init(int len);
