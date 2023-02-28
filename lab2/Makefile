@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = 
+CFLAGS = -l readline
 DEBUGFLAGS = -g
 SOURCES = main.c
 LISTSOURCES = list_stack.c
