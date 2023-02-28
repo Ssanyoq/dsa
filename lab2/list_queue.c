@@ -3,12 +3,14 @@
 #include <stdlib.h>
 
 int push(Queue *q, Item *val) {
+    Item *new = (Item *)malloc(sizeof(Item));
+    new = val;
     val->next = NULL;
     if (q->head == NULL) {
-        q->head = val;
-        q->tail = val;
+        q->head = new;
+        q->tail = new;
     } else {
-        q->tail->next = val;
+        q->tail->next = new;
         q->tail = q->tail->next;
     }
     return EXIT_SUCCESS;
