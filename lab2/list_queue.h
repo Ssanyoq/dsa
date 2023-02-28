@@ -2,10 +2,11 @@ typedef struct Item {
     char *id;
     int ta;
     int ts;
-    Item *next;
+    struct Item *next;
 } Item;
 
-typedef struct Stack
+typedef struct Queue
 {
-    Item *top;
-} Stack;
+    Item *tail;
+    Item *head;
+} Queue;

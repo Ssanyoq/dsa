@@ -1,28 +1,29 @@
-#include "vector_stack.h"
-#include "stack.h"
+#include "vector_queue.h"
+#include "queue.h"
 
-int push(Stack *s, Item *val) {
-    if (s->max_size == s->top) {
+int push(Queue *q, Item *val) {
+    if (q->tail == q->head - 1) {
         return ERR_CODE;
     }
-    (s->arr)[s->top] = *val;
-    s->top++;
+    q->arr[q->tail] = *val;
+    q->tail = (q->tail + 1) % q->max_size;
     return CORRECT_CODE;
 }
 
-int pop(Stack *s, Item *val) {
-    if (s->top == 0) {
+int pop(Queue *q, Item *val) {
+    if (q->head == q->tail) { 
         return ERR_CODE;
     }
-    *val = (s->arr)[s->top - 1];
-    s->top--;
+    *val = q->arr[q->head];
+    q->head++;
     return CORRECT_CODE;
 }
 
 Stack *init(int len) {
-    Stack *s = (Stack *)malloc(sizeof(Stack));
-    s->max_size = len - 1;
-    s->top = 0;
-    s->arr = (Item *)malloc(len * sizeof(Item));
-    return s;
+    Queue *q = (Queue *)malloc(sizeof(Queue));
+    q->arr = (Item *)malloc(len * sizeof(Item));
+    q->head = 0;
+    q->tail = 0;
+    q->max_size = len;
+    return q;
 }

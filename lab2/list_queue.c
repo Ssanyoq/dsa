@@ -1,24 +1,34 @@
-#include "stack.h"
-#include "list_stack.h"
+#include "queue.h"
+#include "list_queue.h"
 #include <stdlib.h>
 
-int push(Stack *s, Item *val) {
-    val->next = s->top;
-    s->top = val->next;
-    return CORRECT_CODE;
+int push(Queue *q, Item *val) {
+    val->next = NULL;
+    if (q->head == NULL) {
+        q->head = val;
+        q->tail = val;
+    } else {
+        q->tail->next = val;
+        q->tail = q->tail->next;
+    }
+    return EXIT_SUCCESS
 }
 
-int pop(Stack *s, Item *val) {
-    if (s->top == NULL) {
+int pop(Queue *q, Item *val) {
+    if (q->head == NULL) {
         return ERR_CODE;
     }
-    val = s->top;
-    s->top = s->top->next;
-    return CORRECT_CODE;
+    val = q->head;
+    q->head = q->head->next;
+    if (q->head == NULL) {
+        q->tail = NULL;
+    }
+    return EXIT_SUCCESS;
 }
 
-Stack *init(int len) {
-    Stack *s = (Stack *)malloc(sizeof(Stack));
-    s->top = NULL;
-    return s;
+Queue *init(int len) {
+    Queue *q = (Queue *)malloc(sizeof(Queue));
+    q->head = NULL;
+    q->tail = NULL;
+    return q;
 }

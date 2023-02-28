@@ -4,10 +4,11 @@ typedef struct Item {
     int ts;
 } Item;
 
-typedef struct Stack
+typedef struct Queue
 {
-    Item *arr;
-    int top;
+    struct Item *arr;
+    int head;
+    int tail;
     int max_size;
-} Stack;
+} Queue;
 
