@@ -2,8 +2,8 @@ CC = gcc
 CFLAGS = -l readline
 DEBUGFLAGS = -g
 SOURCES = main.c
-LISTSOURCES = list_stack.c
-VECTORSOURCES = vector_stack.c
+LISTSOURCES = list_queue.c
+VECTORSOURCES = vector_queue.c
 EXENAME = e
 EXEDIR = build
 
