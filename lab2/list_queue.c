@@ -11,7 +11,7 @@ int push(Queue *q, Item *val) {
         q->tail->next = val;
         q->tail = q->tail->next;
     }
-    return EXIT_SUCCESS
+    return EXIT_SUCCESS;
 }
 
 int pop(Queue *q, Item *val) {
