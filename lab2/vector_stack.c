@@ -7,7 +7,7 @@ int push(Stack *s, Item *val) {
     }
     (s->arr)[s->top] = *val;
     s->top++;
-    return 0;
+    return CORRECT_CODE;
 }
 
 int pop(Stack *s, Item *val) {
@@ -16,7 +16,7 @@ int pop(Stack *s, Item *val) {
     }
     *val = (s->arr)[s->top - 1];
     s->top--;
-    return 0;
+    return CORRECT_CODE;
 }
 
 Stack *init(int len) {
