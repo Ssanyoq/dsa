@@ -7,6 +7,7 @@ typedef struct Item {
 typedef struct Stack
 {
     Item *arr;
-    Item *top;
+    int top;
+    int max_size;
 } Stack;
 
