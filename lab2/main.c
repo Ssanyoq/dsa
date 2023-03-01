@@ -78,7 +78,11 @@ int main() {
     }
     int time_limit = check(q)->ta;
     int *pop_time = (int *)malloc(stands * sizeof(int));
-    for (int i = 0; i <= time_limit;) {
+    for (int i = 0; i < stands; i++) {
+        pop_time[i] = -1;
+    }
+    int last_taken = -1;
+    for (int i = 0;;) {
         if (i == 0) {
             goto PRINTS;
         }
@@ -90,7 +94,46 @@ int main() {
             print_queue(queues[j]);
         }
         printf("\n");
-        break;
+
+
+        //finding next event
+        int min_time = 9999999;
+        int min_queue = -2; // -1 - needs to find new one, [0, stands) - needs to get new customer, -2 - undefined, terminate loop
+        for (int j = 0; j < stands; j++) {
+            if (pop_time[i] != -1) {
+                if (min_time > pop_time[i]) {
+                    min_time = pop_time[i];
+                    min_queue = i;
+                }
+            }
+        }
+        Item *tmp = check(q);
+        if (tmp != NULL) {
+            if (tmp->ta < min_time) {
+                min_time = tmp->ta;
+                min_queue = -1;
+            }
+        }
+
+        //now processing
+        if (min_queue == -2) {
+            break;
+        } else if (min_queue == -1) {
+            pop(q, tmp);
+            last_taken = (last_taken + 1) % stands;
+            push(queues[last_taken], tmp);
+            if (pop_time[last_taken] == -1) {
+                pop_time[last_taken] = tmp->ta + tmp->ts;
+            }
+            
+        } else { // pops from queue
+            pop(queues[min_queue], NULL);
+            if (check(queues[min_queue]) != NULL) {
+                pop_time[min_queue] = i + check(queues[min_queue])->ts;
+            }
+        }
+        i = min_time;
+        printf("%d\n", i);
     }
 
     return 0;
