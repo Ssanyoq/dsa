@@ -35,7 +35,8 @@ Item *check(Queue *q) {
 }
 
 void print_queue(Queue *q) {
-    for (int i = 0; i != q->tail; i = (i + 1) % q->max_size) {
+    printf("head=%d, tail=%d\n", q->head, q->tail);
+    for (int i = q->head; i != q->tail || i >= q->max_size; i = (i + 1) % q->max_size) {
         printf("%s ", q->arr[i].id);
     }
     if ( q->arr[q->tail].id != NULL) {

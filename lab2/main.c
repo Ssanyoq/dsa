@@ -46,6 +46,7 @@ int main() {
     }
 
     // now chars to Items
+    int exit_i;
     for (int i = 0; i < arr_len; i++) {
         if (strchr(slashed[i], '/') == NULL) {
             goto END_OF_LOOP;
@@ -73,7 +74,8 @@ int main() {
     }
     print_queue(q);
     Queue **queues = (Queue **)malloc(sizeof(Queue *) * stands);
-    for (int i = 0; i < stands; i++) {
+    int i;
+    for (i = 0; i < stands; i++) {
         queues[i] = init(LIMIT);
     }
     int time_limit = check(q)->ta;
@@ -100,10 +102,10 @@ int main() {
         int min_time = 9999999;
         int min_queue = -2; // -1 - needs to find new one, [0, stands) - needs to get new customer, -2 - undefined, terminate loop
         for (int j = 0; j < stands; j++) {
-            if (pop_time[i] != -1) {
-                if (min_time > pop_time[i]) {
-                    min_time = pop_time[i];
-                    min_queue = i;
+            if (pop_time[j] != -1) {
+                if (min_time > pop_time[j]) {
+                    min_time = pop_time[j];
+                    min_queue = j;
                 }
             }
         }
@@ -114,7 +116,6 @@ int main() {
                 min_queue = -1;
             }
         }
-
         //now processing
         if (min_queue == -2) {
             break;
@@ -127,14 +128,30 @@ int main() {
             }
             
         } else { // pops from queue
-            pop(queues[min_queue], NULL);
-            if (check(queues[min_queue]) != NULL) {
-                pop_time[min_queue] = i + check(queues[min_queue])->ts;
+            Item *_;
+            int out = pop(queues[min_queue], _);
+            if (out == ERR_CODE) {
+                for (int k = 0; k < stands; k++) {
+                    if (pop_time[k] > i) {
+                        i = pop_time[k];
+                        pop(queues[k], _);
+                    }
+                }
+                exit_i = i;
+                break;
             }
+            if (check(queues[min_queue]) != NULL) {
+                pop_time[min_queue] = min_time + check(queues[min_queue])->ts;
+            }
+
         }
         i = min_time;
-        printf("%d\n", i);
     }
-
+    printf("%d\n", exit_i);
+        for (int j = 0; j < stands; j++) {
+            printf("№%d ", j + 1);
+            print_queue(queues[j]);
+        }
+        printf("\n");
     return 0;
 }
