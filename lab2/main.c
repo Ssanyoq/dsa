@@ -71,5 +71,27 @@ int main() {
         END_OF_LOOP:
         free(slashed[i]);
     }
+    print_queue(q);
+    Queue **queues = (Queue **)malloc(sizeof(Queue *) * stands);
+    for (int i = 0; i < stands; i++) {
+        queues[i] = init(LIMIT);
+    }
+    int time_limit = check(q)->ta;
+    int *pop_time = (int *)malloc(stands * sizeof(int));
+    for (int i = 0; i <= time_limit;) {
+        if (i == 0) {
+            goto PRINTS;
+        }
+
+        PRINTS:
+        printf("%d\n", i);
+        for (int j = 0; j < stands; j++) {
+            printf("№%d ", j + 1);
+            print_queue(queues[j]);
+        }
+        printf("\n");
+        break;
+    }
+
     return 0;
 }
