@@ -1,6 +1,7 @@
 #include "vector_queue.h"
 #include "queue.h"
 #include <stdlib.h>
+#include <stdio.h>
 
 int push(Queue *q, Item *val) {
     if (q->tail == q->head - 1) {
@@ -27,4 +28,18 @@ Queue *init(int len) {
     q->tail = 0;
     q->max_size = len;
     return q;
+}
+
+Item *check(Queue *q) {
+    return &(q->arr[q->head]);
+}
+
+void print_queue(Queue *q) {
+    for (int i = 0; i != q->tail; i = (i + 1) % q->max_size) {
+        printf("%s ", q->arr[i].id);
+    }
+    if ( q->arr[q->tail].id != NULL) {
+        printf("%s", q->arr[q->tail].id);
+    }
+    printf("\n");
 }

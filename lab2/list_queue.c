@@ -1,6 +1,7 @@
 #include "queue.h"
 #include "list_queue.h"
 #include <stdlib.h>
+#include <stdio.h>
 
 int push(Queue *q, Item *val) {
     Item *new = (Item *)malloc(sizeof(Item));
@@ -33,4 +34,21 @@ Queue *init(int len) {
     q->head = NULL;
     q->tail = NULL;
     return q;
+}
+
+Item *check(Queue *q) {
+    return q->head;
+}
+
+void print_queue(Queue *q) {
+    Item *cur = q->head;
+    while (cur != q->tail)
+    {
+        printf("%s ", cur->id);
+        cur = cur->next;
+    }
+    if (cur != NULL) {
+        printf("%s", cur->id);
+    }
+    printf("\n");
 }

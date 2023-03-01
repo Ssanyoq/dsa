@@ -8,4 +8,8 @@ int push(Queue *q, Item *val);
 
 int pop(Queue *q, Item *val);
 
+Item *check(Queue *q); // allows you to check 1st item without poping it
+
 Queue *init(int len);
+
+void print_queue(Queue *q);
