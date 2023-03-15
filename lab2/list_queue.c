@@ -2,11 +2,14 @@
 #include "list_queue.h"
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
 int push(Queue *q, Item *val) {
     Item *new = (Item *)malloc(sizeof(Item));
-    new = val;
-    val->next = NULL;
+    memcpy(new, val, sizeof(Item *));
+    new->id = (char *)malloc((strlen(val->id) + 1) * sizeof(char));
+    memcpy(new->id, val->id, (strlen(val->id))* sizeof(char));
+    new->next = NULL;
     if (q->head == NULL) {
         q->head = new;
         q->tail = new;

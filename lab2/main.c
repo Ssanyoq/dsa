@@ -11,7 +11,13 @@
 #include <string.h>
 #include <readline/readline.h>
 
-#define LIMIT 10000
+#define LIMIT 100000
+
+/*
+tests:
+2 a/1/20 b/1/15 c/2/10 d/5/8 e/6/5 f/6/9
+2 a/1/20 b/1/15 c/2/10 d/5/8 e/6/5 f/6/9 g/7/8 h/8/9 i/8/1 j/10/123 k/22/5
+*/
 
 
 int main() {
@@ -19,7 +25,7 @@ int main() {
     Queue *q = init(LIMIT);
     char *inp = readline("Input:\n");
     short is_first = 1;
-    char **slashed = (char **)malloc(LIMIT * sizeof(char *));
+    char **slashed = (char **)malloc(LIMIT * LIMIT * sizeof(char *));
     int arr_len = 0;
     while (inp != NULL)
     {
