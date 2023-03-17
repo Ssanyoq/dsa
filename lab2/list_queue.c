@@ -6,10 +6,10 @@
 
 int push(Queue *q, Item *val) {
     Item *new = (Item *)malloc(sizeof(Item));
-    memcpy(new, val, sizeof(Item *));
+    memcpy(new, val, sizeof(Item));
     new->id = (char *)malloc((strlen(val->id) + 1) * sizeof(char));
     memcpy(new->id, val->id, (strlen(val->id))* sizeof(char));
-    new->next = NULL;
+    val->next = NULL;
     if (q->head == NULL) {
         q->head = new;
         q->tail = new;
