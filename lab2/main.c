@@ -11,7 +11,7 @@
 #include <string.h>
 #include <readline/readline.h>
 
-#define LIMIT 100000
+#define LIMIT 5
 
 /*
 tests:
@@ -25,7 +25,7 @@ int main() {
     Queue *q = init(LIMIT);
     char *inp = readline("Input:\n");
     short is_first = 1;
-    char **slashed = (char **)malloc(LIMIT * LIMIT * sizeof(char *));
+    char **slashed = (char **)malloc(LIMIT * sizeof(char *));
     int arr_len = 0;
     while (inp != NULL)
     {
@@ -94,7 +94,6 @@ int main() {
         if (i == 0) {
             goto PRINTS;
         }
-
         PRINTS:
         printf("%d\n", i);
         for (int j = 0; j < stands; j++) {
@@ -102,7 +101,6 @@ int main() {
             print_queue(queues[j]);
         }
         printf("\n");
-
 
         //finding next event
         int min_time = 9999999;
@@ -116,7 +114,8 @@ int main() {
             }
         }
         Item *tmp = check(q);
-        if (tmp != NULL) {
+        if (tmp == NULL) {
+        } else {
             if (tmp->ta < min_time) {
                 min_time = tmp->ta;
                 min_queue = -1;
@@ -126,13 +125,16 @@ int main() {
         if (min_queue == -2) {
             break;
         } else if (min_queue == -1) {
-            pop(q, tmp);
+            int out;
+            out = pop(q, tmp);
+            if (out == ERR_CODE) {
+                continue;
+            }
             last_taken = (last_taken + 1) % stands;
             push(queues[last_taken], tmp);
             if (pop_time[last_taken] == -1) {
                 pop_time[last_taken] = tmp->ta + tmp->ts;
             }
-            
         } else { // pops from queue
             Item *_;
             int out = pop(queues[min_queue], _);
@@ -155,8 +157,7 @@ int main() {
     }
     printf("%d\n", exit_i);
         for (int j = 0; j < stands; j++) {
-            printf("№%d ", j + 1);
-            print_queue(queues[j]);
+            printf("№%d \n", j + 1);
         }
         printf("\n");
     return 0;
