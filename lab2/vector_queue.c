@@ -4,7 +4,8 @@
 #include <stdio.h>
 
 int push(Queue *q, Item *val) {
-    if (q->tail == q->head - 1) {
+    if ((q->tail + 1) % q->max_size == q->head) {
+        printf("Limit reached, new element(id = %s) won't be added\n", val->id);
         return ERR_CODE;
     }
     q->arr[q->tail] = *val;
@@ -16,7 +17,8 @@ int pop(Queue *q, Item *val) {
     if (q->head == q->tail) { 
         return ERR_CODE;
     }
-    *val = q->arr[q->head];
+    Item cur = q->arr[q->head]; 
+    val = &cur;
     q->head++;
     return CORRECT_CODE;
 }
@@ -31,11 +33,14 @@ Queue *init(int len) {
 }
 
 Item *check(Queue *q) {
+    if (q->head == q->tail) {
+        return NULL;
+    }
     return &(q->arr[q->head]);
 }
 
 void print_queue(Queue *q) {
-    printf("head=%d, tail=%d\n", q->head, q->tail);
+    // printf("head=%d, tail=%d\n", q->head, q->tail);
     for (int i = q->head; i != q->tail || i >= q->max_size; i = (i + 1) % q->max_size) {
         printf("%s ", q->arr[i].id);
     }
