@@ -64,14 +64,7 @@ int main() {
         new_arr[i] = &(arr[i][cur]);
         m[i] -= cur;
     }
-<<<<<<< HEAD
-    printf("\n\n");
-    print_arr(new_arr, n, m);
-    free_arr(arr, n);
-    free(m);
-=======
     printf("\n\nNew matrix:\n");
     print_arr(arr, n, m);
->>>>>>> d0fd9ba2b32a98d2cae9a6e013a98425f2d50629
     return 0;
 }
