@@ -50,7 +50,9 @@ int main() {
         free(inp);
         inp = readline("");
     }
-
+    if (arr_len == 0) {
+        return 0;
+    }
     // now chars to Items
     int exit_i;
     for (int i = 0; i < arr_len; i++) {
