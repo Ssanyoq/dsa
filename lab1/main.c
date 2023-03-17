@@ -3,6 +3,7 @@
 
 #include "print.h"
 #include "mem.h"
+#include "istream.h"
 
 int min_index(int *arr, int len) {
     int min;
@@ -24,7 +25,9 @@ int main() {
     int n;
     int *m;
     printf("Input rows amount: ");
-    scanf("%d", &n);
+    if (input_u(&n) == -1) {
+        return 1;
+    }
     arr = (int **)safe_malloc(n * sizeof(int *));
     m = (int *)safe_malloc(n * sizeof(int));
     if (arr == NULL || m == NULL) {
@@ -32,10 +35,23 @@ int main() {
     }
     printf("Input elements amount and then this amount of elements %d times: \n", n);
     for (int i = 0; i < n; i++) {
-        scanf("%d", &(m[i]));
+        if (input_u(&(m[i])) == -1) {
+            return 1;
+        }
         arr[i] = (int *)safe_malloc(m[i] * sizeof(int));
         for (int j = 0; j < m[i]; j++) {
-            scanf("%d", &(arr[i][j]));
+            int out = scanf("%d", &(arr[i][j]));
+            while (out != 1) {
+                out = scanf("%d", &(arr[i][j]));
+                if (out == -1) {
+                return 1;
+                }
+                if (out != 1) {
+                    printf("Bad input, try again: ");
+                    clear_buff();
+                }
+            };
+            
         }
     }
     printf("\n\nGiven matrix:\n");
@@ -48,9 +64,14 @@ int main() {
         new_arr[i] = &(arr[i][cur]);
         m[i] -= cur;
     }
+<<<<<<< HEAD
     printf("\n\n");
     print_arr(new_arr, n, m);
     free_arr(arr, n);
     free(m);
+=======
+    printf("\n\nNew matrix:\n");
+    print_arr(arr, n, m);
+>>>>>>> d0fd9ba2b32a98d2cae9a6e013a98425f2d50629
     return 0;
 }

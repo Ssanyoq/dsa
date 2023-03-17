@@ -1,7 +1,7 @@
 CC = gcc
 CFLAGS = 
 DEBUGFLAGS = -g
-SOURCES = main.c mem.c print.c
+SOURCES = main.c mem.c print.c istream.c
 EXENAME = e
 EXEDIR = build
 
