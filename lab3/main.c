@@ -2,6 +2,7 @@
 #include "table.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <readline/readline.h>
 
 int menu() {
     // -1: EOF
@@ -56,7 +57,10 @@ int main() {
             print_table(t);
             break;
         case 5:
-            Table *out = parse_file("test.txt");
+            printf("Input relative path to a desired import file: ");
+            char *inp = readline("");
+            Table *out = parse_file(inp);
+            free(inp);
             if (out == NULL) {
                 printf("Error occurred while importing from file. Table remains\n");
             } else {
