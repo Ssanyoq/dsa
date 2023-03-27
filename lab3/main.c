@@ -42,14 +42,22 @@ int main() {
     t->cur_size = 0;
     t->max_size = 0;
     t->elems = NULL;
+    int code;
 
     while (inp != 0 || inp != -1) {
         switch (inp)
         {
         case 1:
-            printf("input as:\n<n>\n<key>\n<parent key>\n<Item>\n");
+            code = input_elem(stdin, t);
+            if (code == -1) {
+                printf("Error occured while adding an element\n");
+            }
             break;
         case 2:
+            code = delete_elem(t);
+            if (code == -1) {
+                printf("Error occured while deleting an element\n");
+            }
             break;
         case 3:
             break;

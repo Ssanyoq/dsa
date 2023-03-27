@@ -1,4 +1,5 @@
 #include "structs.h"
+#include "table.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -13,6 +14,73 @@ KeySpace *find(int key, Table *table) {
         }
     }
     return NULL;
+}
+
+int add(Table *t, KeySpace *item) {
+    if (find(item->key, t) != NULL || t->cur_size == t->max_size) {
+        return -1;
+    }
+    t->elems[t->cur_size] = *item;
+    t->cur_size++;
+    return 1;
+}
+
+int input_elem(FILE *readfile, Table *t) {
+    if (t->max_size == t->cur_size) {
+        return -1;
+    }
+    printf("input a new element as:\n<key>\n<parent key>\n<Item>\n");
+    char *key = freadline(readfile);
+    char *par_key = freadline(readfile);
+    char *value = freadline(readfile);
+    char *m;
+    int k = strtol(key, &m, 10);
+    if (m == key) { // bad str to long
+        goto err;
+    } else if (k < 0) {
+        goto err;
+    }
+
+    int par_k = strtol(par_key, &m, 10);
+    if (m == par_key) { // bad str to long
+        goto err;
+    } else if (par_k < 0) {
+        goto err;
+    }
+
+    if (find(k, t) != NULL /* || find(par_k, out) == NULL || !check_value(value) */) { //  TODO: decide
+        err:
+        free(key);
+        free(par_key);
+        free(value);
+        return -1;
+    }
+    free(key);
+    free(par_key);
+    KeySpace new;
+    new.key = k;
+    new.par_key = par_k;
+    new.item = (Item *)malloc(sizeof(Item));
+    new.item->data = value;
+    t->elems[t->cur_size] = new;
+    t->cur_size++;
+    return 1;
+}
+
+int delete_elem(Table *t) {
+    printf("Input key of an element that you want to delete: ");
+    char *marker;
+    char *str_part = readline("");
+    int key = strtol(str_part, &marker, 10); 
+    if (marker == str_part) {
+        return -1; // no integers
+    }
+    KeySpace *to_delete = find(key, t);
+    if (to_delete == NULL) {
+        return -1; // no such element
+    }
+    to_delete = &(t->elems[t->cur_size - 1]);
+    return 1;
 }
 
 char *freadline(FILE *readfile) {

@@ -10,4 +10,8 @@ char *freadline(FILE *readfile);
 
 void print_table(Table *t);
 
+int input_elem(FILE *readfile, Table *t);
+
+int delete_elem(Table *t);
+
 #endif
