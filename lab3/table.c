@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
+#include <readline/readline.h>
 
 
 KeySpace *find(int key, Table *table) {
@@ -14,6 +15,24 @@ KeySpace *find(int key, Table *table) {
         }
     }
     return NULL;
+}
+
+int find_with_inputs(Table *t) {
+    int out = 0;
+    int key;
+    char *str_part = readline("Input key of a desired element: ");
+    char *marker;
+    key = strtol(str_part, &marker, 10);
+    if (str_part == marker) {
+        return -1;
+    }
+    KeySpace *found = find(key, t);
+    if (found == NULL) {
+        printf("There is no such element with key = %d.\n", key);
+    } else {
+        printf("Found! Element:\nkey = %d, parent key = %d, value = %s\n", found->key, found->par_key, found->item->data);
+    }
+    return 1;
 }
 
 int add(Table *t, KeySpace *item) {
@@ -29,9 +48,12 @@ int input_elem(FILE *readfile, Table *t) {
     if (t->max_size == t->cur_size) {
         return -1;
     }
-    printf("input a new element as:\n<key>\n<parent key>\n<Item>\n");
+    printf("input a new element:\n");
+    printf("Key: ");
     char *key = freadline(readfile);
+    printf("Parent key: ");
     char *par_key = freadline(readfile);
+    printf("Value: ");
     char *value = freadline(readfile);
     char *m;
     int k = strtol(key, &m, 10);
@@ -79,7 +101,8 @@ int delete_elem(Table *t) {
     if (to_delete == NULL) {
         return -1; // no such element
     }
-    to_delete = &(t->elems[t->cur_size - 1]);
+    *to_delete = t->elems[t->cur_size - 1];
+    t->cur_size--;
     return 1;
 }
 

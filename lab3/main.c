@@ -51,15 +51,25 @@ int main() {
             code = input_elem(stdin, t);
             if (code == -1) {
                 printf("Error occured while adding an element\n");
+            } else {
+                printf("Success\n");
             }
             break;
         case 2:
             code = delete_elem(t);
             if (code == -1) {
                 printf("Error occured while deleting an element\n");
+            } else {
+                printf("Success\n");
             }
             break;
         case 3:
+            code = find_with_inputs(t);
+            if (code == -1) {
+                printf("Error occured while deleting an element\n");
+            } else {
+                // printf("Success\n");
+            }
             break;
         case 4:
             print_table(t);
