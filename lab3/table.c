@@ -234,6 +234,9 @@ void print_table(Table *t) {
 
 Table *parse_file(char *path) {
     FILE *readfile = fopen(path, "r");
+    if (readfile == NULL){
+        return NULL;
+    }
     char *marker;
     char *str_part = freadline(readfile);
     if (str_part == NULL) {
@@ -312,4 +315,19 @@ Table *parse_file(char *path) {
     fclose(readfile);
     // printf("len after: %d, i: %d, real i:%d, new_len: %d \n", len, i, real_i, new_len); // FOR DEBUG
     return out;
+}
+
+void free_table(Table *t) {
+    if (t == NULL) {
+        return;
+    }
+    for (int i = 0; i < t->cur_size; i++) {
+        free_ks(t->elems[i]);
+    }
+    free(t->elems);
+    free(t);
+}
+
+void free_ks(KeySpace k) {
+    free(k.item->data);
 }
