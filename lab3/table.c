@@ -261,7 +261,7 @@ Table *parse_file(char *path) {
         printf("Memory allocation error\n");
         return NULL;
     }
-    out->cur_size = len;
+    out->cur_size = 0;
     out->max_size = len;
     out->elems = (KeySpace *)malloc(sizeof(KeySpace) * len);
     if (out == NULL) {
@@ -270,7 +270,6 @@ Table *parse_file(char *path) {
     }
     int real_i = 0;
     int i = 0;
-    int new_len = len;
     for (; i < len; i++) {
         char *key = freadline(readfile);
         char *par_key = freadline(readfile);
@@ -296,7 +295,6 @@ Table *parse_file(char *path) {
             free(key);
             free(par_key);
             free(value);
-            new_len--;
             continue;
         }
         free(key);
@@ -308,9 +306,7 @@ Table *parse_file(char *path) {
         cur.item->data = value;
         out->elems[real_i] = cur;
         real_i++;
-    }
-    if (i != real_i) {
-        out->cur_size = new_len;
+        out->cur_size++;
     }
     fclose(readfile);
     // printf("len after: %d, i: %d, real i:%d, new_len: %d \n", len, i, real_i, new_len); // FOR DEBUG
@@ -330,4 +326,5 @@ void free_table(Table *t) {
 
 void free_ks(KeySpace k) {
     free(k.item->data);
+    free(k.item);
 }
