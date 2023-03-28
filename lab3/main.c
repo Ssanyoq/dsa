@@ -78,7 +78,7 @@ int main() {
             printf("Input relative path to a desired import file: ");
             char *inp = readline("");
             if (inp == NULL) {
-                return -1;
+                goto program_quit;
             }
             Table *out = parse_file(inp);
             free(inp);
@@ -103,8 +103,10 @@ int main() {
             }
             break;
         case -1:
-            return 0;
+            goto program_quit;
         case 0:
+            program_quit:
+            free_table(t);
             return 0;
         }
         inp = menu();
