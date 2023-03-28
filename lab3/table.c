@@ -181,6 +181,7 @@ int delete(Table *t, int key) {
     }
     *to_delete = t->elems[t->cur_size - 1];
     t->cur_size--;
+    free_ks(t->elems[t->cur_size]);
     return 1;
 }
 
