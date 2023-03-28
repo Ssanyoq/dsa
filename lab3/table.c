@@ -21,10 +21,15 @@ int delete_with_conditions(Table *t) {
     printf("Input key of an element that you want to delete: ");
     char *marker;
     char *str_part = readline("");
+    if (str_part == NULL) {
+        return EOF;
+    }
     int key = strtol(str_part, &marker, 10); 
     if (marker == str_part) {
+        free(str_part);
         return ERR_CODE; // no integers
     }
+    free(str_part);
     int len;
     KeySpace **out = find_children(key, t, &len);
     int code;
@@ -42,11 +47,16 @@ int find_children_prints(Table *t) {
     int out = 0;
     int key;
     char *str_part = readline("Input key of a parent: ");
+    if (str_part == NULL) {
+        return EOF;
+    }
     char *marker;
     key = strtol(str_part, &marker, 10);
     if (str_part == marker) {
+        free(str_part);
         return ERR_CODE;
     }
+    free(str_part);
     int len;
     KeySpace **ans = find_children(key, t, &len);
     if (len == 0) {
@@ -79,11 +89,16 @@ int find_with_inputs(Table *t) {
     int out = 0;
     int key;
     char *str_part = readline("Input key of a desired element: ");
+    if (str_part == NULL) {
+        return EOF;
+    }
     char *marker;
     key = strtol(str_part, &marker, 10);
     if (str_part == marker) {
+        free(str_part);
         return ERR_CODE;
     }
+    free(str_part);
     KeySpace *found = find(key, t);
     if (found == NULL) {
         printf("There is no such element with key = %d.\n", key);
@@ -109,10 +124,22 @@ int input_elem(FILE *readfile, Table *t) {
     printf("input a new element:\n");
     printf("Key: ");
     char *key = freadline(readfile);
+    if (key == NULL) {
+        return EOF;
+    }
     printf("Parent key: ");
     char *par_key = freadline(readfile);
+    if (par_key == NULL) {
+        free(key);
+        return EOF;
+    }
     printf("Value: ");
     char *value = freadline(readfile);
+    if (value == NULL) {
+        free(par_key);
+        free(key);
+        return EOF;
+    }
     char *m;
     int k = strtol(key, &m, 10);
     if (m == key) { // bad str to long
@@ -161,10 +188,15 @@ int delete_elem(Table *t) {
     printf("Input key of an element that you want to delete: ");
     char *marker;
     char *str_part = readline("");
+    if (str_part == NULL) {
+        return EOF;
+    }
     int key = strtol(str_part, &marker, 10); 
     if (marker == str_part) {
+        free(str_part);
         return ERR_CODE; // no integers
     }
+    free(str_part);
     return delete(t, key); 
 }
 
@@ -204,13 +236,18 @@ Table *parse_file(char *path) {
     FILE *readfile = fopen(path, "r");
     char *marker;
     char *str_part = freadline(readfile);
+    if (str_part == NULL) {
+        return NULL;
+    }
     int len = strtol(str_part, &marker, 10); 
     
     if (marker == str_part) { // bad str to long
         printf("File's length not found.\n");
+        free(str_part);
         return NULL;
     } else if (len <= 0) {
         printf("Bad number\n");
+        free(str_part);
         return NULL;
     }
     free(str_part);

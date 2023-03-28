@@ -49,7 +49,7 @@ int main() {
         {
         case 1:
             code = input_elem(stdin, t);
-            if (code == -1) {
+            if (code == ERR_CODE) {
                 printf("Error occured while adding an element\n");
             } else {
                 printf("Success\n");
@@ -57,7 +57,7 @@ int main() {
             break;
         case 2:
             code = delete_elem(t);
-            if (code == -1) {
+            if (code == ERR_CODE) {
                 printf("Error occured while deleting an element\n");
             } else {
                 printf("Success\n");
@@ -65,7 +65,7 @@ int main() {
             break;
         case 3:
             code = find_with_inputs(t);
-            if (code == -1) {
+            if (code == ERR_CODE) {
                 printf("Error occured while deleting an element\n");
             } else {
                 // printf("Success\n");
@@ -77,6 +77,9 @@ int main() {
         case 5:
             printf("Input relative path to a desired import file: ");
             char *inp = readline("");
+            if (inp == NULL) {
+                return -1;
+            }
             Table *out = parse_file(inp);
             free(inp);
             if (out == NULL) {
@@ -89,13 +92,13 @@ int main() {
             break;
         case 6:
             code = delete_with_conditions(t);
-            if (code == -1) {
+            if (code == ERR_CODE) {
                 printf("Error occured while deleting an element\n");
             }
             break;
         case 7:
             code = find_children_prints(t);
-            if (code == -1) {
+            if (code == ERR_CODE) {
                 printf("Error occured while finding children\n");
             }
             break;
