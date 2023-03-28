@@ -101,6 +101,8 @@ int main() {
             break;
         case -1:
             return 0;
+        case 0:
+            return 0;
         }
         inp = menu();
     }

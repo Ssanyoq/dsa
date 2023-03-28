@@ -17,6 +17,27 @@ KeySpace *find(int key, Table *table) {
     return NULL;
 }
 
+int delete_with_conditions(Table *t) {
+    printf("Input key of an element that you want to delete: ");
+    char *marker;
+    char *str_part = readline("");
+    int key = strtol(str_part, &marker, 10); 
+    if (marker == str_part) {
+        return ERR_CODE; // no integers
+    }
+    int len;
+    KeySpace **out = find_children(key, t, &len);
+    int code;
+    if (len != 0) {
+        printf("Children found, can't delete\n");
+        code = 1;
+    } else {
+        code = delete(t, key);
+    }
+    free(out);
+    return code;
+}
+
 int find_children_prints(Table *t) {
     int out = 0;
     int key;
@@ -24,7 +45,7 @@ int find_children_prints(Table *t) {
     char *marker;
     key = strtol(str_part, &marker, 10);
     if (str_part == marker) {
-        return -1;
+        return ERR_CODE;
     }
     int len;
     KeySpace **ans = find_children(key, t, &len);
@@ -35,6 +56,7 @@ int find_children_prints(Table *t) {
             printf("key = %d, parent key = %d, value = %s\n", ans[i]->key, ans[i]->par_key, ans[i]->item->data);
         }
     }
+    free(ans);
     return 1;
 }
 
@@ -60,7 +82,7 @@ int find_with_inputs(Table *t) {
     char *marker;
     key = strtol(str_part, &marker, 10);
     if (str_part == marker) {
-        return -1;
+        return ERR_CODE;
     }
     KeySpace *found = find(key, t);
     if (found == NULL) {
@@ -73,7 +95,7 @@ int find_with_inputs(Table *t) {
 
 int add(Table *t, KeySpace *item) {
     if (find(item->key, t) != NULL || t->cur_size == t->max_size) {
-        return -1;
+        return ERR_CODE;
     }
     t->elems[t->cur_size] = *item;
     t->cur_size++;
@@ -82,7 +104,7 @@ int add(Table *t, KeySpace *item) {
 
 int input_elem(FILE *readfile, Table *t) {
     if (t->max_size == t->cur_size) {
-        return -1;
+        return ERR_CODE;
     }
     printf("input a new element:\n");
     printf("Key: ");
@@ -111,7 +133,7 @@ int input_elem(FILE *readfile, Table *t) {
         free(key);
         free(par_key);
         free(value);
-        return -1;
+        return ERR_CODE;
     }
     free(key);
     free(par_key);
@@ -125,21 +147,25 @@ int input_elem(FILE *readfile, Table *t) {
     return 1;
 }
 
+int delete(Table *t, int key) {
+    KeySpace *to_delete = find(key, t);
+    if (to_delete == NULL) {
+        return ERR_CODE; // no such element
+    }
+    *to_delete = t->elems[t->cur_size - 1];
+    t->cur_size--;
+    return 1;
+}
+
 int delete_elem(Table *t) {
     printf("Input key of an element that you want to delete: ");
     char *marker;
     char *str_part = readline("");
     int key = strtol(str_part, &marker, 10); 
     if (marker == str_part) {
-        return -1; // no integers
+        return ERR_CODE; // no integers
     }
-    KeySpace *to_delete = find(key, t);
-    if (to_delete == NULL) {
-        return -1; // no such element
-    }
-    *to_delete = t->elems[t->cur_size - 1];
-    t->cur_size--;
-    return 1;
+    return delete(t, key); 
 }
 
 char *freadline(FILE *readfile) {
