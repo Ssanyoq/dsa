@@ -17,6 +17,42 @@ KeySpace *find(int key, Table *table) {
     return NULL;
 }
 
+int find_children_prints(Table *t) {
+    int out = 0;
+    int key;
+    char *str_part = readline("Input key of a parent: ");
+    char *marker;
+    key = strtol(str_part, &marker, 10);
+    if (str_part == marker) {
+        return -1;
+    }
+    int len;
+    KeySpace **ans = find_children(key, t, &len);
+    if (len == 0) {
+        printf("There are no elements with such parent key\n");
+    } else {
+        for (int i = 0; i < len; i++) {
+            printf("key = %d, parent key = %d, value = %s\n", ans[i]->key, ans[i]->par_key, ans[i]->item->data);
+        }
+    }
+    return 1;
+}
+
+KeySpace **find_children(int key, Table *t, int *size) {
+    // returns array with elems that have par_key == key
+    KeySpace **children = (KeySpace **)malloc(sizeof(KeySpace *) * t->cur_size);
+    int children_amt = 0;
+    for (int i = 0; i < t->cur_size; i++) {
+        if (t->elems[i].par_key == key) {
+            children[children_amt] = &(t->elems[i]);
+            children_amt++;
+        }
+    }
+    children = (KeySpace **)realloc(children, sizeof(KeySpace) * children_amt);
+    *size = children_amt;
+    return children;
+}
+
 int find_with_inputs(Table *t) {
     int out = 0;
     int key;

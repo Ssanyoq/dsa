@@ -88,8 +88,16 @@ int main() {
             }
             break;
         case 6:
+            code = delete_with_conditions(t);
+            if (code == -1) {
+                printf("Error occured while deleting an element\n");
+            }
             break;
         case 7:
+            code = find_children_prints(t);
+            if (code == -1) {
+                printf("Error occured while finding children\n");
+            }
             break;
         case -1:
             return 0;

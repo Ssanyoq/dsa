@@ -16,4 +16,8 @@ int input_elem(FILE *readfile, Table *t);
 
 int delete_elem(Table *t);
 
+int find_children_prints(Table *t);
+
+KeySpace **find_children(int key, Table *t, int *size);
+
 #endif
