@@ -44,9 +44,11 @@ int delete(Table *t, int key) {
     }
     t->cur_size--;
     to_delete->item->data = (char *)realloc(to_delete->item->data,
-    strlen(t->elems[t->cur_size].item->data) * sizeof(char));
+    (strlen(t->elems[t->cur_size].item->data) + 1) * sizeof(char));
     to_delete->key = t->elems[t->cur_size].key;
     to_delete->par_key = t->elems[t->cur_size].par_key;
+    memcpy(to_delete->item->data, t->elems[t->cur_size].item->data,
+		    sizeof(char) * (strlen(t->elems[t->cur_size].item->data) + 1));
     free_ks(t->elems[t->cur_size]);
     return 1;
 }

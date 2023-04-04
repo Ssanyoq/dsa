@@ -162,6 +162,9 @@ int delete_elem(Table *t) {
 void print_table(Table *t) {
     printf("Table:\nMax length = %d\nCurrent length = %d\n", t->max_size, t->cur_size);
     for (int i = 0; i < t->cur_size; i++) {
+        printf("key = %d\n", t->elems[i].key);
+        printf("par_key = %d\n", t->elems[i].par_key);
+        printf("data = %s\n", t->elems[i].item->data);
         printf("key = %d; parent key = %d, data = %s\n", t->elems[i].key, t->elems[i].par_key, t->elems[i].item->data);
     }
 }
