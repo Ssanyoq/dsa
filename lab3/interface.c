@@ -1,5 +1,5 @@
 #include "table.h"
-#include "structs.h"
+#include "interface.h"
 #include <stdlib.h>
 
 
@@ -57,3 +57,4 @@ void free_table(Table *t) {
     free(t->elems);
     free(t);
 }
+

@@ -1,7 +1,7 @@
 CC = gcc
 CFLAGS = -l readline
 DEBUGFLAGS = -g
-SOURCES = main.c table.c
+SOURCES = main.c table.c interface.c
 EXENAME = e
 EXEDIR = build
 

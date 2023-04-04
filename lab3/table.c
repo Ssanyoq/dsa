@@ -61,21 +61,6 @@ int find_children_prints(Table *t) {
     return 1;
 }
 
-KeySpace **find_children(int key, Table *t, int *size) {
-    // returns array with elems that have par_key == key
-    KeySpace **children = (KeySpace **)malloc(sizeof(KeySpace *) * t->cur_size);
-    int children_amt = 0;
-    for (int i = 0; i < t->cur_size; i++) {
-        if (t->elems[i].par_key == key) {
-            children[children_amt] = &(t->elems[i]);
-            children_amt++;
-        }
-    }
-    children = (KeySpace **)realloc(children, sizeof(KeySpace) * children_amt);
-    *size = children_amt;
-    return children;
-}
-
 int find_with_inputs(Table *t) {
     int out = 0;
     int key;
@@ -158,17 +143,6 @@ int input_elem(FILE *readfile, Table *t) {
     return 1;
 }
 
-int delete(Table *t, int key) {
-    KeySpace *to_delete = find(key, t);
-    if (to_delete == NULL) {
-        return ERR_CODE; // no such element
-    }
-    *to_delete = t->elems[t->cur_size - 1];
-    t->cur_size--;
-    free_ks(t->elems[t->cur_size]);
-    return 1;
-}
-
 int delete_elem(Table *t) {
     printf("Input key of an element that you want to delete: ");
     char *marker;
@@ -183,6 +157,13 @@ int delete_elem(Table *t) {
     }
     free(str_part);
     return delete(t, key); 
+}
+
+void print_table(Table *t) {
+    printf("Table:\nMax length = %d\nCurrent length = %d\n", t->max_size, t->cur_size);
+    for (int i = 0; i < t->cur_size; i++) {
+        printf("key = %d; parent key = %d, data = %s\n", t->elems[i].key, t->elems[i].par_key, t->elems[i].item->data);
+    }
 }
 
 char *freadline(FILE *readfile) {
@@ -209,12 +190,6 @@ char *freadline(FILE *readfile) {
     return ptr;
 }
 
-void print_table(Table *t) {
-    printf("Table:\nMax length = %d\nCurrent length = %d\n", t->max_size, t->cur_size);
-    for (int i = 0; i < t->cur_size; i++) {
-        printf("key = %d; parent key = %d, data = %s\n", t->elems[i].key, t->elems[i].par_key, t->elems[i].item->data);
-    }
-}
 
 
 Table *parse_file(char *path) {
@@ -298,16 +273,7 @@ Table *parse_file(char *path) {
     return out;
 }
 
-void free_table(Table *t) {
-    if (t == NULL) {
-        return;
-    }
-    for (int i = 0; i < t->cur_size; i++) {
-        free_ks(t->elems[i]);
-    }
-    free(t->elems);
-    free(t);
-}
+
 
 void free_ks(KeySpace k) {
     free(k.item->data);

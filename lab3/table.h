@@ -23,5 +23,7 @@ int delete_with_conditions(Table *t);
 
 void free_ks(KeySpace k);
 
+void free_table(Table *t);
+
 
 #endif
