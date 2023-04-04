@@ -19,14 +19,9 @@ int delete_elem(Table *t);
 
 int find_children_prints(Table *t);
 
-KeySpace **find_children(int key, Table *t, int *size);
-
 int delete_with_conditions(Table *t);
-
-int delete(Table *t, int key);
 
 void free_ks(KeySpace k);
 
-void free_table(Table *t);
 
 #endif

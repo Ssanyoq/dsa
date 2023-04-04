@@ -1,21 +1,12 @@
 #include "structs.h"
 #include "table.h"
+#include "interface.h"
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
 #include <readline/readline.h>
-
-
-KeySpace *find(int key, Table *table) {
-    for (int i = 0; i < table->cur_size; i++) {
-        if (table->elems[i].key == key) {
-            return &(table->elems[i]);
-        }
-    }
-    return NULL;
-}
 
 int delete_with_conditions(Table *t) {
     printf("Input key of an element that you want to delete: ");
@@ -108,14 +99,7 @@ int find_with_inputs(Table *t) {
     return 1;
 }
 
-int add(Table *t, KeySpace *item) {
-    if (find(item->key, t) != NULL || t->cur_size == t->max_size) {
-        return ERR_CODE;
-    }
-    t->elems[t->cur_size] = *item;
-    t->cur_size++;
-    return 1;
-}
+
 
 int input_elem(FILE *readfile, Table *t) {
     if (t->max_size == t->cur_size) {
