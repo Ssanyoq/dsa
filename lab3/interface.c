@@ -42,14 +42,11 @@ int delete(Table *t, int key) {
     if (to_delete == NULL) {
         return ERR_CODE; // no such element
     }
-    free_ks(*to_delete);
-    to_delete = (KeySpace * )malloc(sizeof(KeySpace));
-    to_delete->item = (Item *)malloc(sizeof(Item));
-    to_delete->key = t->elems[t->cur_size - 1].key;
-    to_delete->par_key = t->elems[t->cur_size - 1].par_key;
-    to_delete->item->data = (char *)malloc(sizeof(char) * strlen(t->elems[t->cur_size - 1].item->data));
-    to_delete->item->data = strcpy(to_delete->item->data, t->elems[t->cur_size - 1].item->data);
     t->cur_size--;
+    to_delete->item->data = (char *)realloc(to_delete->item->data,
+    strlen(t->elems[t->cur_size].item->data) * sizeof(char));
+    to_delete->key = t->elems[t->cur_size].key;
+    to_delete->par_key = t->elems[t->cur_size].par_key;
     free_ks(t->elems[t->cur_size]);
     return 1;
 }
