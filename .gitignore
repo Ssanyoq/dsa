@@ -55,6 +55,9 @@ dkms.conf
 # vim
 .swp
 
+# bin for temporary storage
+mem.bin
+
 sem/
 .vscode/
 .idea/
