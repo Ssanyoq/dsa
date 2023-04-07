@@ -5,16 +5,16 @@
 #include "structs.h"
 #include "interface.h"
 
-int table_init(Table *t, const char *filename) {
+int table_init(Table **t, const char *filename) {
     FILE *fd = fopen(filename, "rb+wb");
     if (fd == NULL) {
         return ERR_CODE;
     }
-    t = (Table *)malloc(sizeof(Table));
-    t->cur_len = 0;
-    t->max_len = 0;
-    t->fd = fd;
-    t->arr = (Item *)malloc(t->max_len * sizeof(Item));
+    *t = (Table *)malloc(sizeof(Table));
+    (*t)->cur_len = 0;
+    (*t)->max_len = 0;
+    (*t)->fd = fd;
+    (*t)->arr = (Item *)malloc((*t)->max_len * sizeof(Item));
     return SUCCESS;
 }
 
@@ -83,15 +83,15 @@ int save_table(Table *t, const char *filename) {
         return ERR_CODE;
     }
     char *buf = (char *)malloc(sizeof(char));
-    
-    fprintf("%d\n", t->max_len);
+
+    fprintf(savefile, "%d\n", t->max_len);
 
     for (int i = 0; i < t->cur_len; i++) {
         fseek(t->fd, t->arr[i].offset, SEEK_SET);
         buf = (char *)malloc(t->arr[i].len * sizeof(char));
         fread(buf, sizeof(char), t->arr[i].len, t->fd);
 
-        fprintf("%d\n%d\n%s\n", t->arr[i].key, t->arr[i].par_key, buf);
+        fprintf(savefile, "%d\n%d\n%s\n", t->arr[i].key, t->arr[i].par_key, buf);
     }
     free(buf);
     return SUCCESS;
