@@ -11,4 +11,8 @@ int delete_option(Table *t);
 
 int find_option(Table *t);
 
+int delete_with_condition_option(Table *t);
+
+int find_children_option(Table *t);
+
 #endif

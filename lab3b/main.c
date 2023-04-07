@@ -54,7 +54,7 @@ int main() {
             switch (code)
             {
             case ERR_CODE:
-                printf("Error occured while adding an element\n");
+                printf("Error occurred while adding an element\n");
                 break;
             case OVERFLOW:
                 printf("Table overflow\n");
@@ -72,10 +72,7 @@ int main() {
             switch (code)
             {
             case ERR_CODE:
-                printf("Error occured while adding an element\n");
-                break;
-            case OVERFLOW:
-                printf("Table overflow\n");
+                printf("Error occurred while adding an element\n");
                 break;
             case EOF:
                 printf("Element input terminated\n");
@@ -91,7 +88,7 @@ int main() {
         case 3:
             code = find_option(t);
             if (code == ERR_CODE) {
-                printf("Error occured while deleting an element\n");
+                printf("Error occurred while deleting an element\n");
             } else {
                 // printf("Success\n");
             }
@@ -114,16 +111,41 @@ int main() {
             }
             break;
         case 6:
-            // code = delete_with_conditions(t);
-            // if (code == ERR_CODE) {
-            //     printf("Error occured while deleting an element\n");
-            // }
+            code = delete_with_condition_option(t);
+            switch (code)
+            {
+            case ERR_CODE:
+                printf("Error occurred while adding an element\n");
+                break;
+            case EOF:
+                printf("Element input terminated\n");
+                break;
+            case NOT_FOUND:
+                printf("There is no element with such key\n");
+                break;
+            case 123:
+                break;
+            default:
+                printf("Success\n");
+                break;
+            }
             break;
         case 7:
-            // code = find_children_prints(t);
-            // if (code == ERR_CODE) {
-            //     printf("Error occured while finding children\n");
-            // }
+            code = find_children_option(t);
+            switch (code)
+            {
+            case ERR_CODE:
+                printf("Error occurred while finding children\n");
+                break;
+            case EOF:
+                printf("Element input terminated\n");
+                break;
+            case NOT_FOUND:
+                printf("There is no element with such key\n");
+                break;
+            default:
+                break;
+            }
             break;
         case -1:
             goto program_quit;

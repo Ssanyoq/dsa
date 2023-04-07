@@ -196,3 +196,59 @@ int find_option(Table *t) {
     }
     return SUCCESS;
 }
+
+int delete_with_condition_option(Table *t) {
+    char *marker;
+    char *str_part = readline("Input key of an element that you want to delete: ");
+    if (str_part == NULL) {
+        return EOF;
+    }
+    int key = strtol(str_part, &marker, 10); 
+    if (marker == str_part) {
+        free(str_part);
+        return ERR_CODE; // no integers
+    }
+    free(str_part);
+    int len = 0;
+    int *out = find_children(t, key, &len);
+    int code;
+    if (len > 0) {
+        printf("Children found, can't delete\n");
+        code = 123;
+    } else {
+        code = delete(t, key);
+    }
+    free(out);
+    return code;
+}
+
+int find_children_option(Table *t) {
+    int out = 0;
+    int key;
+    char *str_part = readline("Input key of a parent: ");
+    if (str_part == NULL) {
+        return EOF;
+    }
+    char *marker;
+    key = strtol(str_part, &marker, 10);
+    if (str_part == marker) {
+        free(str_part);
+        return ERR_CODE;
+    }
+    free(str_part);
+    int len;
+    int *ans = find_children(t, key, &len);
+    if (len == 0) {
+        printf("There are no elements with such parent key\n");
+    } else {
+        char *buf;
+        for (int i = 0; i < len; i++) {
+            buf = get_val(t, t->arr[i].key);
+            printf("key = %d, parent key = %d, value = %s\n", t->arr[ans[i]].key,
+                 t->arr[ans[i]].par_key, buf);
+        }
+        free(buf);
+    }
+    free(ans);
+    return SUCCESS;
+}
