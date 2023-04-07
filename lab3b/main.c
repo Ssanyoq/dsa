@@ -50,20 +50,43 @@ int main() {
         switch (inp)
         {
         case 1:
-            // code = input_elem(stdin, t);
-            // if (code == ERR_CODE) {
-            //     printf("Error occured while adding an element\n");
-            // } else {
-            //     printf("Success\n");
-            // }
+            code = input_elem(t);
+            switch (code)
+            {
+            case ERR_CODE:
+                printf("Error occured while adding an element\n");
+                break;
+            case OVERFLOW:
+                printf("Table overflow\n");
+                break;
+            case EOF:
+                printf("Element input terminated\n");
+                break;
+            default:
+                printf("Success\n");
+                break;
+            }
             break;
         case 2:
-            // code = delete_elem(t);
-            // if (code == ERR_CODE) {
-            //     printf("Error occured while deleting an element\n");
-            // } else {
-            //     printf("Success\n");
-            // }
+            code = delete_elem(t);
+            switch (code)
+            {
+            case ERR_CODE:
+                printf("Error occured while adding an element\n");
+                break;
+            case OVERFLOW:
+                printf("Table overflow\n");
+                break;
+            case EOF:
+                printf("Element input terminated\n");
+                break;
+            case NOT_FOUND:
+                printf("There is no element with such key\n");
+                break;
+            default:
+                printf("Success\n");
+                break;
+            }
             break;
         case 3:
             // code = find_with_inputs(t);

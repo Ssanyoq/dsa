@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <readline/readline.h>
 
 char *freadline(FILE *readfile) {
     char *ptr = (char *)malloc(1 * sizeof(char));
@@ -55,19 +56,14 @@ int parse_file(Table *t, const char *path) {
     free(str_part);
 
     // printf("length before: %d\n", len); // FOR DEBUG
-    printf("All parameters read\n"); // DEBUG
-    printf("table *:%p\n", t); // DEBUG
     t = (Table *)realloc(t, sizeof(Table));
     t->cur_len = 0;
-    printf("file opened\n"); // DEBUG
     t->max_len = len;
-    printf("before realloc\n"); // DEBUG
     t->arr = (Item *)realloc(t->arr, sizeof(Item) * len);
     if (t->arr == NULL) {
         printf("Memory allocation error\n");
         return ERR_CODE;
     }
-    printf("allocated\n"); // DEBUG
     
     int real_i = 0;
     int i = 0;
@@ -75,7 +71,6 @@ int parse_file(Table *t, const char *path) {
         char *key = freadline(readfile);
         char *par_key = freadline(readfile);
         char *value = freadline(readfile);
-        printf("element No %d read\n", i); // DEBUG
         if (key == NULL) {
             break;
         }
@@ -115,4 +110,66 @@ int parse_file(Table *t, const char *path) {
     fclose(readfile);
     // printf("len after: %d, i: %d, real i:%d, new_len: %d \n", len, i, real_i, new_len); // FOR DEBUG
     return SUCCESS;
+}
+
+int input_elem(Table *t) {
+    if (t->max_len == t->cur_len) {
+        return OVERFLOW;
+    }
+    printf("Input a new element:\n");
+    char *key = readline("Key: ");
+    if (key == NULL) {
+        return EOF;
+    }
+
+    char *par_key = readline("Parent key: ");
+    if (par_key == NULL) {
+        free(key);
+        return EOF;
+    }
+    char *value = readline("Value: ");
+    if (value == NULL) {
+        free(par_key);
+        free(key);
+        return EOF;
+    }
+    char *m;
+    int k = strtol(key, &m, 10);
+    if (m == key) { // bad str to long
+        goto err;
+    } else if (k < 0) {
+        goto err;
+    }
+
+    int par_k = strtol(par_key, &m, 10);
+    if (m == par_key) { // bad str to long
+        goto err;
+    } else if (par_k < 0) {
+        err:
+        free(key);
+        free(par_key);
+        free(value);
+        return ERR_CODE;
+    }
+
+    if (insert(t, k, par_k, value) == ALREADY_EXISTS /* || find(par_k, out) == NULL || !check_value(value) */) {
+        return ALREADY_EXISTS;
+    }
+    return SUCCESS;
+}
+
+int delete_elem(Table *t) {
+    printf("Input key of an element that you want to delete: ");
+    char *marker;
+    char *str_part = readline("");
+    if (str_part == NULL) {
+        return EOF;
+    }
+    int key = strtol(str_part, &marker, 10); 
+    if (marker == str_part) {
+        free(str_part);
+        return ERR_CODE; // no integers
+    }
+    free(str_part);
+    return delete(t, key); 
 }
