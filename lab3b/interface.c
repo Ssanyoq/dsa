@@ -67,7 +67,7 @@ int delete(Table *t, int key) {
     return SUCCESS;
 }
 
-void print_table(Table *t) {
+void print_table(const Table *t) {
     printf("Table: max size = %d, current size = %d\n", t->max_len, t->cur_len);
     char *buf = (char *)malloc(sizeof(char));
     for (int i = 0; i < t->cur_len; i++) {
@@ -79,7 +79,7 @@ void print_table(Table *t) {
     free(buf);
 }
 
-int save_table(Table *t, const char *filename) {
+int save_table(const Table *t, const char *filename) {
     FILE *savefile = fopen(filename, "w");
     if (savefile == NULL) {
         return ERR_CODE;
@@ -105,7 +105,7 @@ void free_table(Table *t) {
     free(t);
 }
 
-char *get_val(Table *t, int key) {
+char *get_val(const Table *t, int key) {
     int index = find(t, key);
     if (index == NOT_FOUND) {
         return NULL;
@@ -114,4 +114,17 @@ char *get_val(Table *t, int key) {
     char *buf = (char *)malloc(t->arr[index].len * sizeof(char));
     fread(buf, sizeof(char), t->arr[index].len, t->fd);
     return buf;
+}
+
+int *find_children(const Table *t, int par_key, int *len) {
+    int *out = (int *)malloc(t->cur_len * sizeof(int)); // worst scenario
+    *len = 0;
+    for (int i = 0; i < t->cur_len; i++) {
+        if (t->arr[i].par_key == par_key) {
+            out[*len] = i;
+            len++;
+        }
+    }
+    out = (int *)realloc(out, sizeof(int) * (*len));
+    return out;
 }

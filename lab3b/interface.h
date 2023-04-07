@@ -15,12 +15,13 @@ int insert(Table *t, int key, int par_key, const char *str);
 
 int delete(Table *t, int key);
 
-void print_table(Table *t);
+void print_table(const Table *t);
 
-int save_table(Table *t, const char *filename);
+int save_table(const Table *t, const char *filename);
 
 void free_table(Table *t);
 
-char *get_val(Table *t, int key);
+char *get_val(const Table *t, int key);
 
+int *find_children(const Table *t, int par_key, int *len);
 #endif
