@@ -6,6 +6,7 @@
 #include "interface.h"
 
 int table_init(Table **t, const char *filename) {
+    fclose(fopen(filename, "w")); // clearing
     FILE *fd = fopen(filename, "rb+wb");
     if (fd == NULL) {
         return ERR_CODE;
