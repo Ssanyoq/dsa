@@ -109,6 +109,7 @@ int main() {
             } else {
                 printf("Successfully imported from file\n");
             }
+            printf("%d\n", t->max_len);
             break;
         case 6:
             code = delete_with_condition_option(t);

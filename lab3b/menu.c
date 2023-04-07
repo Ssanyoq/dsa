@@ -56,9 +56,10 @@ int parse_file(Table *t, const char *path) {
     free(str_part);
 
     // printf("length before: %d\n", len); // FOR DEBUG
-    t = (Table *)realloc(t, sizeof(Table));
+//    t = (Table *)realloc(t, sizeof(Table));
     t->cur_len = 0;
     t->max_len = len;
+    printf("%d\n", t->max_len);
     t->arr = (Item *)realloc(t->arr, sizeof(Item) * len);
     if (t->arr == NULL) {
         printf("Memory allocation error\n");

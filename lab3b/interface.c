@@ -7,7 +7,7 @@
 
 int table_init(Table **t, const char *filename) {
     fclose(fopen(filename, "w")); // clearing
-    FILE *fd = fopen(filename, "rb+wb");
+    FILE *fd = fopen(filename, "wb+");
     if (fd == NULL) {
         return ERR_CODE;
     }
@@ -68,7 +68,7 @@ int delete(Table *t, int key) {
     return SUCCESS;
 }
 
-void print_table(const Table *t) {
+void print_table(const Table *t) {    
     printf("Table: max size = %d, current size = %d\n", t->max_len, t->cur_len);
     char *buf = (char *)malloc(sizeof(char));
     for (int i = 0; i < t->cur_len; i++) {
