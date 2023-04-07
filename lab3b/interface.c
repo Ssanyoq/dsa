@@ -122,7 +122,7 @@ int *find_children(const Table *t, int par_key, int *len) {
     for (int i = 0; i < t->cur_len; i++) {
         if (t->arr[i].par_key == par_key) {
             out[*len] = i;
-            len++;
+            (*len)++;
         }
     }
     out = (int *)realloc(out, sizeof(int) * (*len));
