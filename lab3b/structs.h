@@ -1,7 +1,7 @@
 #ifndef STRUCTS_H
 #define STRUCTS_H
 
-#include <stddef.h>
+#include <stdio.h>
 
 typedef struct Item
 {
