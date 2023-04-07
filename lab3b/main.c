@@ -50,7 +50,7 @@ int main() {
         switch (inp)
         {
         case 1:
-            code = input_elem(t);
+            code = input_option(t);
             switch (code)
             {
             case ERR_CODE:
@@ -68,7 +68,7 @@ int main() {
             }
             break;
         case 2:
-            code = delete_elem(t);
+            code = delete_option(t);
             switch (code)
             {
             case ERR_CODE:
@@ -89,12 +89,12 @@ int main() {
             }
             break;
         case 3:
-            // code = find_with_inputs(t);
-            // if (code == ERR_CODE) {
-            //     printf("Error occured while deleting an element\n");
-            // } else {
-            //     // printf("Success\n");
-            // }
+            code = find_option(t);
+            if (code == ERR_CODE) {
+                printf("Error occured while deleting an element\n");
+            } else {
+                // printf("Success\n");
+            }
             break;
         case 4:
             print_table(t);

@@ -112,7 +112,7 @@ int parse_file(Table *t, const char *path) {
     return SUCCESS;
 }
 
-int input_elem(Table *t) {
+int input_option(Table *t) {
     if (t->max_len == t->cur_len) {
         return OVERFLOW;
     }
@@ -150,15 +150,13 @@ int input_elem(Table *t) {
         free(par_key);
         free(value);
         return ERR_CODE;
-    }
-
-    if (insert(t, k, par_k, value) == ALREADY_EXISTS /* || find(par_k, out) == NULL || !check_value(value) */) {
-        return ALREADY_EXISTS;
-    }
-    return SUCCESS;
+    }  
+    int out = insert(t, k, par_k, value);
+    free(value);
+    return out;
 }
 
-int delete_elem(Table *t) {
+int delete_option(Table *t) {
     printf("Input key of an element that you want to delete: ");
     char *marker;
     char *str_part = readline("");
@@ -172,4 +170,29 @@ int delete_elem(Table *t) {
     }
     free(str_part);
     return delete(t, key); 
+}
+
+int find_option(Table *t) {
+    int out = 0;
+    int key;
+    char *str_part = readline("Input key of a desired element: ");
+    if (str_part == NULL) {
+        return EOF;
+    }
+    char *marker;
+    key = strtol(str_part, &marker, 10);
+    if (str_part == marker) {
+        free(str_part);
+        return ERR_CODE;
+    }
+    free(str_part);
+    out = find(t, key);
+    if (out == NOT_FOUND) {
+        printf("There is no such element with key %d\n", key);
+    } else {
+        char *buf = get_val(t, key);
+        printf("Element found!\nKey: %d, parent key: %d, value: %s\n", t->arr[out].key, t->arr[out].par_key, buf);
+        free(buf);
+    }
+    return SUCCESS;
 }

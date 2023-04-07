@@ -51,7 +51,7 @@ int delete(Table *t, int key) {
     if (index == NOT_FOUND) {
         return NOT_FOUND;
     }
-    int delta = t->arr[index].len;
+    int delta = t->arr[index].len * sizeof(char);
     char *buf = (char *)malloc(sizeof(char));
     for (int i = index + 1; i < t->cur_len; i++) {
         buf = (char *)realloc(buf, sizeof(char) * t->arr[i].len);
@@ -60,7 +60,9 @@ int delete(Table *t, int key) {
         t->arr[i].offset -= delta;
         fseek(t->fd, t->arr[i].offset, SEEK_SET);
         fwrite(buf, sizeof(char), t->arr[i].len, t->fd);
+        t->arr[i - 1] = t->arr[i];
     }
+    t->cur_len--;
     free(buf);
     return SUCCESS;
 }
@@ -101,4 +103,15 @@ void free_table(Table *t) {
     fclose(t->fd);
     free(t->arr);
     free(t);
+}
+
+char *get_val(Table *t, int key) {
+    int index = find(t, key);
+    if (index == NOT_FOUND) {
+        return NULL;
+    }
+    fseek(t->fd, t->arr[index].offset, SEEK_SET);
+    char *buf = (char *)malloc(t->arr[index].len * sizeof(char));
+    fread(buf, sizeof(char), t->arr[index].len, t->fd);
+    return buf;
 }
