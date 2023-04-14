@@ -134,6 +134,7 @@ void print_table(const Table *t) {
         buf = (char *)malloc(t->arr[i].len * sizeof(char));
         fread(buf, sizeof(char), t->arr[i].len, t->fd);
         printf("key: %d; parent key: %d; value: %s\n", t->arr[i].key, t->arr[i].par_key, buf);
+        free(buf);
     }
 }
 
