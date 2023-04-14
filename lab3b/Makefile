@@ -7,3 +7,6 @@ EXEDIR = build
 
 default:
 	$(CC) $(SOURCES) $(CFLAGS) -o $(EXEDIR)/$(EXENAME)
+
+hex:
+	$(CC) hexreader.c $(CFLAGS) -o $(EXEDIR)/hex
