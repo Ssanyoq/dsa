@@ -5,17 +5,62 @@
 #include "structs.h"
 #include "interface.h"
 
-int table_init(Table **t, const char *filename) {
-    fclose(fopen(filename, "w")); // clearing
+int table_init(Table **t, const char *savename, const char *filename) {
+    /*
+    savename:
+    <len>
+    <key>
+    <par_key>
+    <offset>
+    <len>
+    -//-
+    */
     FILE *fd = fopen(filename, "wb+");
     if (fd == NULL) {
         return ERR_CODE;
     }
+    FILE *save = fopen(savename, "rb");
+    if (save == NULL) {
+        fclose(fd);
+        return ERR_CODE;
+    }
+    fseek(save, 0, SEEK_SET);
+    int *len;
+    fread(len, sizeof(int), 1, save);
     *t = (Table *)malloc(sizeof(Table));
     (*t)->cur_len = 0;
     (*t)->max_len = 0;
     (*t)->fd = fd;
     (*t)->arr = (Item *)malloc((*t)->max_len * sizeof(Item));
+    if (len != NULL) {
+        (*t)->max_len = *len;
+        (*t)->arr = (Item *)realloc((*t)->arr, *len * sizeof(Item));
+        int *key, *par_key, *offset, *val_len;
+        for (int i = 0; i < *len; i++) {
+            fread(key, sizeof(int), 1, save);
+            if (key == NULL) {
+                break;
+            }
+            fread(par_key, sizeof(int), 1, save);
+            if (par_key == NULL) {
+                break;
+            }
+            fread(offset, sizeof(int), 1, save);
+            if (offset == NULL) {
+                break;
+            }
+            fread(val_len, sizeof(int), 1, save);
+            if (val_len == NULL) {
+                break;
+            }
+            (*t)->arr[i].key = *key;
+            (*t)->arr[i].par_key = *par_key;
+            (*t)->arr[i].offset = *offset;
+            (*t)->arr[i].len = *val_len;
+            (*t)->cur_len++;
+        }
+    }
+    fclose(save);
     return SUCCESS;
 }
 
@@ -81,22 +126,20 @@ void print_table(const Table *t) {
 }
 
 int save_table(const Table *t, const char *filename) {
-    FILE *savefile = fopen(filename, "w");
+    FILE *savefile = fopen(filename, "wb");
     if (savefile == NULL) {
         return ERR_CODE;
     }
-    char *buf = (char *)malloc(sizeof(char));
-
-    fprintf(savefile, "%d\n", t->max_len);
-
+    fseek(savefile, 0, SEEK_SET);
+    fwrite(&(t->max_len), sizeof(int), 1, savefile);
     for (int i = 0; i < t->cur_len; i++) {
-        fseek(t->fd, t->arr[i].offset, SEEK_SET);
-        buf = (char *)malloc(t->arr[i].len * sizeof(char));
-        fread(buf, sizeof(char), t->arr[i].len, t->fd);
-
-        fprintf(savefile, "%d\n%d\n%s\n", t->arr[i].key, t->arr[i].par_key, buf);
+        fseek(savefile, sizeof(int), SEEK_CUR);
+        fwrite(&(t->arr[i].key), sizeof(int), 1, savefile);
+        fwrite(&(t->arr[i].par_key), sizeof(int), 1, savefile);
+        fwrite(&(t->arr[i].offset), sizeof(int), 1, savefile);
+        fwrite(&(t->arr[i].len), sizeof(int), 1, savefile);
     }
-    free(buf);
+    fclose(savefile);
     return SUCCESS;
 }
 

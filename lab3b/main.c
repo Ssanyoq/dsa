@@ -6,7 +6,8 @@
 #include "interface.h"
 #include "menu.h"
 
-#define STORAGE_FILE "mem.bin"
+#define VALUES_FILE "mem.bin"
+#define KEYS_FILE "savedata.bin"
 
 int menu() {
     // -1: EOF
@@ -43,7 +44,7 @@ int menu() {
 int main() {
     int inp = menu();
     Table *t;
-    table_init(&t, STORAGE_FILE);
+    table_init(&t, KEYS_FILE, VALUES_FILE);
     int code;
 
     while (inp != 0 || inp != -1) {
@@ -99,6 +100,7 @@ int main() {
         case 5:
             printf("Input relative path to a desired import file: ");
             char *inp = readline("");
+            if (inp == NULL) {
                 goto program_quit;
             }
             code = parse_file(t, inp);
@@ -148,10 +150,12 @@ int main() {
         case -1:
             goto program_quit;
         case 0:
+        {
             program_quit:
-            save_table(t, "save.txt");
+            save_table(t, KEYS_FILE);
             free_table(t);
             return 0;
+        }
         }
         inp = menu();
     }

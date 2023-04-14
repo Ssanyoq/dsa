@@ -7,7 +7,7 @@
 #define OVERFLOW 3
 #define SUCCESS 0
 
-int table_init(Table **t, const char *filename);
+int table_init(Table **t, const char *savename, const char *filename);
 
 int find(const Table *t, int key);
 
