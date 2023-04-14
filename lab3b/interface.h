@@ -7,7 +7,7 @@
 #define OVERFLOW 3
 #define SUCCESS 0
 
-int table_init(Table **t, const char *savename, const char *filename);
+int table_init(Table **t, const char *values_path, const char *memory_path, const char *descriptor_path);
 
 int find(const Table *t, int key);
 
@@ -17,7 +17,7 @@ int delete(Table *t, int key);
 
 void print_table(const Table *t);
 
-int save_table(const Table *t, const char *filename);
+int save_table(const Table *t, const char *filename, const char *vals_path);
 
 void free_table(Table *t);
 

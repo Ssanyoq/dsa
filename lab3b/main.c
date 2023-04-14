@@ -6,8 +6,9 @@
 #include "interface.h"
 #include "menu.h"
 
-#define VALUES_FILE "mem.bin"
+#define MEM_FILE "mem.bin"
 #define KEYS_FILE "savedata.bin"
+#define VALUES_FILE "savevalues.bin"
 
 int menu() {
     // -1: EOF
@@ -44,7 +45,7 @@ int menu() {
 int main() {
     int inp = menu();
     Table *t;
-    table_init(&t, KEYS_FILE, VALUES_FILE);
+    table_init(&t, KEYS_FILE, VALUES_FILE, MEM_FILE);
     int code;
 
     while (inp != 0 || inp != -1) {
@@ -152,7 +153,7 @@ int main() {
         case 0:
         {
             program_quit:
-            save_table(t, KEYS_FILE);
+            save_table(t, KEYS_FILE, VALUES_FILE);
             free_table(t);
             return 0;
         }

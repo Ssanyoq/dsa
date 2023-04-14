@@ -5,9 +5,9 @@
 #include "structs.h"
 #include "interface.h"
 
-int table_init(Table **t, const char *savename, const char *filename) {
+int table_init(Table **t, const char *descriptor_path, const char *values_path, const char *memory_path) {
     /*
-    savename:
+    descriptor:
     <len>
     <key>
     <par_key>
@@ -15,52 +15,65 @@ int table_init(Table **t, const char *savename, const char *filename) {
     <len>
     -//-
     */
-    FILE *fd = fopen(filename, "wb+");
+    FILE *fd = fopen(memory_path, "wb+"); // memory
     if (fd == NULL) {
         return ERR_CODE;
     }
-    FILE *save = fopen(savename, "rb");
+    FILE *save = fopen(descriptor_path, "rb"); // descriptor
     if (save == NULL) {
         fclose(fd);
         return ERR_CODE;
     }
+    FILE *vals = fopen(values_path, "rb"); // values
     fseek(save, 0, SEEK_SET);
-    int *len;
-    fread(len, sizeof(int), 1, save);
+    int len;
+    int out = fread(&len, sizeof(int), 1, save);
     *t = (Table *)malloc(sizeof(Table));
     (*t)->cur_len = 0;
     (*t)->max_len = 0;
     (*t)->fd = fd;
     (*t)->arr = (Item *)malloc((*t)->max_len * sizeof(Item));
-    if (len != NULL) {
-        (*t)->max_len = *len;
-        (*t)->arr = (Item *)realloc((*t)->arr, *len * sizeof(Item));
-        int *key, *par_key, *offset, *val_len;
-        for (int i = 0; i < *len; i++) {
-            fread(key, sizeof(int), 1, save);
-            if (key == NULL) {
+    if (out != sizeof(int)) {
+        (*t)->max_len = len;
+        (*t)->arr = (Item *)realloc((*t)->arr, len * sizeof(Item));
+        int key, par_key, offset, val_len;
+        for (int i = 0; i < len; i++) {
+            out = fread(&key, sizeof(int), 1, save);
+            if (out != 1) {
                 break;
             }
-            fread(par_key, sizeof(int), 1, save);
-            if (par_key == NULL) {
+            out = fread(&par_key, sizeof(int), 1, save);
+            if (out != 1) {
                 break;
             }
-            fread(offset, sizeof(int), 1, save);
-            if (offset == NULL) {
+            out = fread(&offset, sizeof(int), 1, save);
+            if (out != 1) {
                 break;
             }
-            fread(val_len, sizeof(int), 1, save);
-            if (val_len == NULL) {
+            out = fread(&val_len, sizeof(int), 1, save);
+            if (out != 1) {
                 break;
             }
-            (*t)->arr[i].key = *key;
-            (*t)->arr[i].par_key = *par_key;
-            (*t)->arr[i].offset = *offset;
-            (*t)->arr[i].len = *val_len;
+            (*t)->arr[i].key = key;
+            (*t)->arr[i].par_key = par_key;
+            (*t)->arr[i].offset = offset;
+            (*t)->arr[i].len = val_len;
             (*t)->cur_len++;
         }
     }
+    fseek(vals, 0, SEEK_SET);
+    char buf;
+    while (1)
+    {   
+        out = fread(&buf, sizeof(char), 1, vals);
+        if (out == 0) {
+            break;
+        }
+        fwrite(&buf, sizeof(char), 1, fd);
+    }
+    
     fclose(save);
+    fclose(vals);
     return SUCCESS;
 }
 
@@ -125,7 +138,7 @@ void print_table(const Table *t) {
     free(buf);
 }
 
-int save_table(const Table *t, const char *filename) {
+int save_table(const Table *t, const char *filename, const char *vals_path) {
     FILE *savefile = fopen(filename, "wb");
     if (savefile == NULL) {
         return ERR_CODE;
@@ -133,13 +146,26 @@ int save_table(const Table *t, const char *filename) {
     fseek(savefile, 0, SEEK_SET);
     fwrite(&(t->max_len), sizeof(int), 1, savefile);
     for (int i = 0; i < t->cur_len; i++) {
-        fseek(savefile, sizeof(int), SEEK_CUR);
         fwrite(&(t->arr[i].key), sizeof(int), 1, savefile);
         fwrite(&(t->arr[i].par_key), sizeof(int), 1, savefile);
         fwrite(&(t->arr[i].offset), sizeof(int), 1, savefile);
         fwrite(&(t->arr[i].len), sizeof(int), 1, savefile);
     }
     fclose(savefile);
+    FILE *vals = fopen(vals_path, "wb");
+    char buf;
+    int out;
+    fseek(t->fd, 0, SEEK_SET);
+    fseek(vals, 0, SEEK_SET);
+    while (1)
+    {   
+        out = fread(&buf, sizeof(char), 1, t->fd);
+        if (out == 0) {
+            break;
+        }
+        fwrite(&buf, sizeof(char), 1, vals);
+    }
+    fclose(vals);
     return SUCCESS;
 }
 
