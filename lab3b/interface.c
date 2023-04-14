@@ -128,14 +128,13 @@ int delete(Table *t, int key) {
 
 void print_table(const Table *t) {    
     printf("Table: max size = %d, current size = %d\n", t->max_len, t->cur_len);
-    char *buf = (char *)malloc(sizeof(char));
+    char *buf;
     for (int i = 0; i < t->cur_len; i++) {
         fseek(t->fd, t->arr[i].offset, SEEK_SET);
         buf = (char *)malloc(t->arr[i].len * sizeof(char));
         fread(buf, sizeof(char), t->arr[i].len, t->fd);
         printf("key: %d; parent key: %d; value: %s\n", t->arr[i].key, t->arr[i].par_key, buf);
     }
-    free(buf);
 }
 
 int save_table(const Table *t, const char *filename, const char *vals_path) {
