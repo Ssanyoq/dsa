@@ -15,7 +15,7 @@ int table_init(Table **t, const char *descriptor_path, const char *values_path, 
     <len>
     -//-
     */
-    FILE *fd = fopen(memory_path, "wb+"); // memory
+    FILE *fd = fopen(memory_path, "rb+"); // memory
     if (fd == NULL) {
         return ERR_CODE;
     }
@@ -62,16 +62,16 @@ int table_init(Table **t, const char *descriptor_path, const char *values_path, 
         }
     }
     fseek(vals, 0, SEEK_SET);
-    char buf;
+    char *buf = (char *)malloc(sizeof(char) * 512);
     while (1)
     {   
-        out = fread(&buf, sizeof(char), 1, vals);
+        out = fread(buf, sizeof(char), 512, vals);
         if (out == 0) {
             break;
         }
-        fwrite(&buf, sizeof(char), 1, fd);
+        fwrite(buf, sizeof(char), out, fd);
     }
-    
+    free(buf);
     fclose(save);
     fclose(vals);
     return SUCCESS;
@@ -153,19 +153,20 @@ int save_table(const Table *t, const char *filename, const char *vals_path) {
     }
     fclose(savefile);
     FILE *vals = fopen(vals_path, "wb");
-    char buf;
+    char *buf = (char *)malloc(sizeof(char) * 512);
     int out;
     fseek(t->fd, 0, SEEK_SET);
     fseek(vals, 0, SEEK_SET);
     while (1)
     {   
-        out = fread(&buf, sizeof(char), 1, t->fd);
+        out = fread(buf, sizeof(char), 512, t->fd);
         if (out == 0) {
             break;
         }
-        fwrite(&buf, sizeof(char), 1, vals);
+        fwrite(buf, sizeof(char), out, vals);
     }
     fclose(vals);
+    free(buf);
     return SUCCESS;
 }
 
