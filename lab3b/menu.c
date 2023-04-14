@@ -215,7 +215,7 @@ int delete_with_condition_option(Table *t) {
     int code;
     if (len > 0) {
         printf("Children found, can't delete\n");
-        code = 123;
+        code = NOT_FOUND;
     } else {
         code = delete(t, key);
     }

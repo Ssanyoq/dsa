@@ -99,7 +99,6 @@ int main() {
         case 5:
             printf("Input relative path to a desired import file: ");
             char *inp = readline("");
-            if (inp == NULL) {
                 goto program_quit;
             }
             code = parse_file(t, inp);
@@ -123,8 +122,6 @@ int main() {
                 break;
             case NOT_FOUND:
                 printf("There is no element with such key\n");
-                break;
-            case 123:
                 break;
             default:
                 printf("Success\n");
