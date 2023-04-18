@@ -1,4 +1,3 @@
-#include "structs.h"
 #include "interface.h"
 #include <string.h>
 #include <stdlib.h>
@@ -53,7 +52,7 @@ int find(const Table *t, const char *key) {
     return NOT_FOUND;
 }
 
-int insert(const Table *t, const char *key, const char *info) {
+int insert(const Table *t, char *key, char *info) {
     if (t->cur_size == t->max_size) {
         return TABLE_OVERFLOW;
     }
@@ -93,45 +92,45 @@ static void print_separator(int size) {
     printf("\n");
 }
 
-void print_table(Table *t) {
+void print_table(const Table *t) {
     /*  max len = x, cur len = y      
        |key   |  value       |  busy  |
                ...
     */
-    int max_key = 3; // "key"
-    int max_val = 5; // "value"
+    int max_key = 3 + 2; // " key "
+    int max_val = 5 + 2; // " value "
     for (int i = 0; i < t->max_size; i++) {
         int cur_key, cur_val;
         if (t->arr[i].key == NULL) {
-            cur_key = 4;
+            cur_key = 4 + 2;
         } else {
-            cur_key = strlen(t->arr[i].key);
+            cur_key = strlen(t->arr[i].key) + 2;
         }
         if (t->arr[i].info == NULL) {
-            cur_val = 4;
+            cur_val = 4 + 2;
         } else {
-            cur_val = strlen(t->arr[i].info);
+            cur_val = strlen(t->arr[i].info) + 2; 
         }
         max_key = max(max_key, cur_key);
         max_val = max(max_val, cur_val);
     }
     // |<max_val>|<max_key>|<4>|
     int width = 1 + max_val + 1 + max_key + 1 + 4 + 1;
-    printf(" Table: max length = %d, current length = %d");
+    printf(" Table: max length = %d, current length = %d\n", t->max_size, t->cur_size);
     print_separator(width);
-    printf("|%-*s|%-*s|busy|\n",max_key, "key", max_val, "value");
+    printf("| %-*s| %-*s|busy|\n",max_key - 1, "key", max_val - 1, "value");
     print_separator(width);
 
     for (int i = 0; i < t->max_size; i++) {
         if (t->arr[i].key == NULL) {
-            printf("|%-*s|", max_key, "NULL");
+            printf("| %-*s|", max_key - 1, "NULL");
         } else {
-            printf("|%-*s|", max_key, t->arr[i].key);
+            printf("| %-*s|", max_key - 1, t->arr[i].key);
         }
         if (t->arr[i].info == NULL) {
-            printf("%-*s|", max_val, "NULL");
+            printf(" %-*s|", max_val - 1, "NULL");
         } else {
-            printf("%-*s|", max_val, t->arr[i].info);
+            printf(" %-*s|", max_val - 1, t->arr[i].info);
         }
         printf(" %d  |\n", t->arr[i].busy);
         print_separator(width);
@@ -139,7 +138,7 @@ void print_table(Table *t) {
 }
 
 
-void free_table(const Table *t) {
+void free_table(Table *t) {
     for (int i = 0; i < t->max_size; i++) {
         if (t->arr[i].busy == 1) {
             free(t->arr[i].info);

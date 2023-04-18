@@ -7,6 +7,8 @@
 #define SUCCESS 0
 #define NOT_FOUND -2
 
+#include "structs.h"
+
 int max(int a, int b);
 
 int get_index(const char *key, int size);
@@ -15,12 +17,12 @@ Table *table_init(int size);
 
 int find(const Table *t, const char *key);
 
-int insert(const Table *t, const char *key, const char *info);
+int insert(const Table *t, char *key, char *info);
 
 int delete(const Table *t, const char *key);
 
-void print_table(Table *t);
+void print_table(const Table *t);
 
-void free_table(const Table *t);
+void free_table(Table *t);
 
 #endif
