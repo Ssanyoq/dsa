@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <readline/readline.h>
+#include <unistd.h>
 
 char *freadline(FILE *readfile) {
     char *ptr = (char *)malloc(1 * sizeof(char));
@@ -56,7 +57,7 @@ int parse_file(Table *t, const char *path) {
     free(str_part);
 
     // printf("length before: %d\n", len); // FOR DEBUG
-//    t = (Table *)realloc(t, sizeof(Table));
+    // t = (Table *)realloc(t, sizeof(Table));
     t->cur_len = 0;
     t->max_len = len;
     printf("%d\n", t->max_len);
@@ -65,7 +66,6 @@ int parse_file(Table *t, const char *path) {
         printf("Memory allocation error\n");
         return ERR_CODE;
     }
-    
     int real_i = 0;
     int i = 0;
     for (; i < len; i++) {

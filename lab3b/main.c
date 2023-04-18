@@ -45,7 +45,10 @@ int menu() {
 int main() {
     int inp = menu();
     Table *t;
-    table_init(&t, KEYS_FILE, VALUES_FILE, MEM_FILE);
+    if (table_init(&t, KEYS_FILE, VALUES_FILE, MEM_FILE) == ERR_CODE) {
+        printf("One of .bin files does not exist\n(savedata.bin, savevalues.bin are required)\n");
+        return ERR_CODE;
+    }
     int code;
 
     while (inp != 0 || inp != -1) {
