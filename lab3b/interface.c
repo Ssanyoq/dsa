@@ -103,7 +103,11 @@ int insert(Table *t, int key, int par_key, const char *str) {
     t->arr[t->cur_len].par_key = par_key;
     t->arr[t->cur_len].len = strlen(str) + 1;
 
-    fseek(t->fd, t->arr[t->cur_len - 1].len + t->arr[t->cur_len - 1].offset, SEEK_SET);
+    if (t->cur_len == 0) {
+        fseek(t->fd, 0, SEEK_SET);
+    } else {
+        fseek(t->fd, t->arr[t->cur_len - 1].len + t->arr[t->cur_len - 1].offset, SEEK_SET);
+    }
     t->arr[t->cur_len].offset = ftell(t->fd);
     fwrite(str, sizeof(char), t->arr[t->cur_len].len, t->fd);
     t->cur_len++;
