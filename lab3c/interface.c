@@ -116,7 +116,7 @@ void print_table(const Table *t) {
     }
     // |<max_val>|<max_key>|<4>|
     int width = 1 + max_val + 1 + max_key + 1 + 4 + 1;
-    printf(" Table: max length = %d, current length = %d\n", t->max_size, t->cur_size);
+    printf("\nTable: max length = %d, current length = %d;\n", t->max_size, t->cur_size);
     print_separator(width);
     printf("| %-*s| %-*s|busy|\n",max_key - 1, "key", max_val - 1, "value");
     print_separator(width);
@@ -135,6 +135,7 @@ void print_table(const Table *t) {
         printf(" %d  |\n", t->arr[i].busy);
         print_separator(width);
     }
+    printf("\n");
 }
 
 
