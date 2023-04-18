@@ -1,12 +1,17 @@
 CC = gcc
 CFLAGS = -l readline
 DEBUGFLAGS = -g
-SOURCES = main.c
+SOURCES = main.c menu.c
+LIBSOURCES = interface.c
 EXENAME = e
 EXEDIR = build
 
 default:
-	$(CC) $(SOURCES) $(CFLAGS) -o $(EXEDIR)/$(EXENAME)
+	$(CC) $(SOURCES) $(LIBSOURCES) $(CFLAGS) -o $(EXEDIR)/$(EXENAME)
 
-hex:
-	$(CC) hexreader.c $(CFLAGS) -o $(EXEDIR)/hex
+lib:
+	gcc $(LIBSOURCES) -c -o build/int.o
+	ar -rc build/libmap.a build/int.o
+
+with_lib:
+	$(CC) $(SOURCES) -lmap -Lbuild/ $(CFLAGS) -o $(EXEDIR)/$(EXENAME)
