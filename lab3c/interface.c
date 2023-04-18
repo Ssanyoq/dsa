@@ -142,8 +142,12 @@ void print_table(const Table *t) {
 void free_table(Table *t) {
     for (int i = 0; i < t->max_size; i++) {
         if (t->arr[i].busy == 1) {
-            free(t->arr[i].info);
-            free(t->arr[i].key);
+            if (t->arr[i].info != NULL) {
+                free(t->arr[i].info);
+            }
+            if (t->arr[i].key != NULL) {
+                free(t->arr[i].key);
+            }
         }
     }
     free(t->arr);

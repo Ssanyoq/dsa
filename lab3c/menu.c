@@ -34,7 +34,7 @@ Table *import_table(const char *filename) {
     if (readfile == NULL){
         return NULL;
     }
-    printf("file opened\n"); // DEBUG
+    // printf("file opened\n"); // DEBUG
     char *marker;
     char *str_part = freadline(readfile);
     if (str_part == NULL) {
@@ -54,7 +54,7 @@ Table *import_table(const char *filename) {
     free(str_part);
 
     Table *t = table_init(len);
-    printf("%d\n", t->max_size); // DEBUG
+    // printf("%d\n", t->max_size); // DEBUG
     for (int i = 0; i < len; i++) {
         char *key = freadline(readfile);
         char *value = freadline(readfile);
@@ -75,7 +75,7 @@ Table *import_table(const char *filename) {
         }
     }
     fclose(readfile);
-    printf("File closed\n");
+    // printf("File closed\n");
     return t;
 }
 
