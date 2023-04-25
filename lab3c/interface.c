@@ -45,6 +45,8 @@ int find(const Table *t, const char *key) {
             if (strcmp(t->arr[index].key, key) == 0) {
                 return index;
             }
+        } else {
+            return NOT_FOUND;
         }
         index = (index + 1) % t->max_size;
         amt_passed++;
