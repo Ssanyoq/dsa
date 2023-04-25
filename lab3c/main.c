@@ -19,7 +19,7 @@ int menu() {
     char t;
     int inp;
     int out = scanf("%d%c", &inp, &t);
-    while (out != 2 || t != '\n' || inp < 0 || inp > 7) {
+    while (out != 2 || t != '\n' || inp < 0 || inp > 5) {
         if (out == -1){
             return -1;
         }
