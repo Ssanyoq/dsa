@@ -85,18 +85,18 @@ Table *import_table(const char *filename) {
 //
 
 int insert_opt(Table *t) {
-    char *key = readline("Input key: ");
+    printf("Input key: ");
+    char *key = readline("");
     if (key == NULL) {
         return EOF;
     }
-    char *info = readline("Input value: ");
+    printf("Input value: ");
+    char *info = readline("");
     if (info == NULL) {
         free(key);
         return EOF;
     }
     int out = insert(t, key, info);
-    free(key);
-    free(info);
     return out;
 }
 

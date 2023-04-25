@@ -4,6 +4,7 @@
 #include <stdio.h>
 
 
+
 static int hash_string(const char *s) {
     int out = 0;
     for (int i = 0; i < strlen(s); i++) {
@@ -20,9 +21,24 @@ int max(int a, int b) {
     }
 }
 
-int get_index(const char *key, int size) {
+int get_index_by_char(const char *key, int size) {
     int hash = hash_string(key);
     return hash % size;
+}
+
+int get_index(const Table *t, const char *key) {
+    // key != NULL => new index
+    // key == NULL => incrementing last
+    
+    static int index;
+    
+    if (key != NULL) {
+        index = get_index_by_char(key, t->max_size);
+    } else {
+        index = (index + 1) % t->max_size;
+    }
+    return index;
+
 }
 
 Table *table_init(int size) {
@@ -37,7 +53,7 @@ Table *table_init(int size) {
 }
 
 int find(const Table *t, const char *key) {
-    int index = get_index(key, t->max_size);
+    int index = get_index(t, key);
     int amt_passed = 0;
     while (amt_passed < t->max_size)
     {
@@ -48,7 +64,7 @@ int find(const Table *t, const char *key) {
         } else {
             return NOT_FOUND;
         }
-        index = (index + 1) % t->max_size;
+        index = get_index(t, NULL);
         amt_passed++;
     }
     return NOT_FOUND;
@@ -61,7 +77,7 @@ int insert(const Table *t, char *key, char *info) {
     if (find(t, key) != NOT_FOUND) {
         return ALREADY_EXISTS;
     }
-    int index = get_index(key, t->max_size);
+    int index = get_index(t, key);
     int amt_passed = 0;
     while (amt_passed < t->max_size) {
         if (!t->arr[index].busy) {
@@ -70,7 +86,7 @@ int insert(const Table *t, char *key, char *info) {
             t->arr[index].busy = 1;
             return SUCCESS;
         }
-        index = (index + 1) % t->max_size;
+        index = get_index(t, NULL);
         amt_passed++;
     }
     return ERR; // bad bad bad

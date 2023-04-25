@@ -11,7 +11,9 @@
 
 int max(int a, int b);
 
-int get_index(const char *key, int size);
+int get_index_by_char(const char *key, int size);
+
+int get_index(const Table *t, const char *key);
 
 Table *table_init(int size);
 
