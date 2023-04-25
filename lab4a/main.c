@@ -42,10 +42,11 @@ int main() {
         switch (inp)
         {
         case 1:
-            code = insert_opt(root);
+            code = insert_opt(&root);
+            printf("%s\n", root->key);
             break;
         case 2:
-            code = delete_opt(root);
+            code = delete_opt(&root);
             break;
         case 3:
             print_tree_opt(root);
@@ -55,7 +56,7 @@ int main() {
             code = find_opt(root);
             break;
         case 5:
-            // code = spec_find(root);
+            code = spec_find_opt(root);
             break;
         case -1:
             goto program_quit;

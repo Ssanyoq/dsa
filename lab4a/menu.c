@@ -5,7 +5,7 @@
 
 #include "interface.h"
 
-int insert_opt(Node *root) {
+int insert_opt(Node **root) {
     printf("Input key: ");
     char *key = readline("");
     if (key == NULL) {
@@ -27,7 +27,7 @@ int insert_opt(Node *root) {
     return out;
 }
 
-int delete_opt(Node *root) {
+int delete_opt(Node **root) {
     char *key = readline("Input key: ");
     if (key == NULL) {
         return EOF;
@@ -68,4 +68,18 @@ void print_tree_opt(const Node *root) {
         return;
     }
     print_tree(root, l_border, r_border);
+}
+
+int spec_find_opt(Node *root) {
+    char *border = readline("Input right border: ");
+    if (border == NULL) {
+        return EOF;
+    }
+    Node *target = spec_find(root, border);
+    if (target == NULL) {
+        return NOT_FOUND;
+    }
+    printf("Best one is: key = %s, value = %s\n", target->key, target->val);
+    free(border);
+    return SUCCESS;
 }
