@@ -12,14 +12,14 @@ int menu() {
     printf("Choose option: \n");
     printf("1 - Add element\n");
     printf("2 - Delete element\n");
-    printf("3 - Find element\n");
-    printf("4 - Print out table\n");
-    printf("5 - Import from text file\n");
+    printf("3 - Print tree\n");
+    printf("4 - Find node\n");
+    printf("5 - Special find\n");
     printf("\n0 - Quit program\n");
     char t;
     int inp;
     int out = scanf("%d%c", &inp, &t);
-    while (out != 2 || t != '\n' || inp < 0 || inp > 7) {
+    while (out != 2 || t != '\n' || inp < 0 || inp > 5) {
         if (out == -1){
             return -1;
         }
@@ -36,32 +36,32 @@ int menu() {
 
 int main() {
     int inp = menu();
-    Table *t = table_init(0);
+    Node *root = NULL;
     int code;
     while (inp != EOF) {
         switch (inp)
         {
         case 1:
-            code = insert_opt(t);
+            code = insert_opt(root);
             break;
         case 2:
-            code = delete_opt(t);
+            code = delete_opt(root);
             break;
         case 3:
-            code = find_opt(t);
-            break;
-        case 4:
-            print_table(t);
+            print_tree_opt(root);
             code = SUCCESS;
             break;
+        case 4:
+            code = find_opt(root);
+            break;
         case 5:
-            code = import_table_opt(&t);
+            // code = spec_find(root);
             break;
         case -1:
             goto program_quit;
         case 0:
             program_quit:
-            free_table(t);
+            free_tree(root);
             return 0;
         }
         switch (code)
@@ -71,9 +71,6 @@ int main() {
             break;
         case NOT_FOUND:
             printf("Element not found\n");
-            break;
-        case TABLE_OVERFLOW:
-            printf("Not enough space for new element\n");
             break;
         case ERR:
             printf("Error occurred\n");
