@@ -61,7 +61,7 @@ int find(const Table *t, const char *key) {
             if (strcmp(t->arr[index].key, key) == 0) {
                 return index;
             }
-        } else {
+        } else if (t->arr[index].busy == 0) {
             return NOT_FOUND;
         }
         index = get_index(t, NULL);
@@ -99,7 +99,7 @@ int delete(const Table *t, const char *key) {
     }
     free(t->arr[index].info);
     free(t->arr[index].key);
-    t->arr[index].busy = 0;
+    t->arr[index].busy = -1;
     return SUCCESS;
 }
 
