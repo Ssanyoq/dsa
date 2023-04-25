@@ -37,7 +37,6 @@ int parse_file(Table *t, const char *path) {
     if (readfile == NULL){
         return ERR_CODE;
     }
-    printf("file opened\n"); // DEBUG
     char *marker;
     char *str_part = freadline(readfile);
     if (str_part == NULL) {
@@ -60,7 +59,6 @@ int parse_file(Table *t, const char *path) {
     // t = (Table *)realloc(t, sizeof(Table));
     t->cur_len = 0;
     t->max_len = len;
-    printf("%d\n", t->max_len);
     t->arr = (Item *)realloc(t->arr, sizeof(Item) * len);
     if (t->arr == NULL) {
         printf("Memory allocation error\n");
@@ -109,7 +107,6 @@ int parse_file(Table *t, const char *path) {
         
     }
     fclose(readfile);
-    // printf("len after: %d, i: %d, real i:%d, new_len: %d \n", len, i, real_i, new_len); // FOR DEBUG
     return SUCCESS;
 }
 
@@ -154,6 +151,8 @@ int input_option(Table *t) {
     }  
     int out = insert(t, k, par_k, value);
     free(value);
+    free(key);
+    free(par_key);
     return out;
 }
 
