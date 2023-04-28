@@ -48,6 +48,8 @@ Table *table_init(int size) {
     new->arr = (KeySpace *)malloc(sizeof(KeySpace) * new->max_size);
     for (int i = 0; i < size; i++) {
         new->arr[i].busy = 0;
+        new->arr[i].key = NULL;
+        new->arr[i].info = NULL;
     }
     return new;
 }
@@ -57,7 +59,7 @@ int find(const Table *t, const char *key) {
     int amt_passed = 0;
     while (amt_passed < t->max_size)
     {
-        if (t->arr[index].busy) {
+        if (t->arr[index].busy == 1) {
             if (strcmp(t->arr[index].key, key) == 0) {
                 return index;
             }
@@ -100,6 +102,8 @@ int delete(const Table *t, const char *key) {
     free(t->arr[index].info);
     free(t->arr[index].key);
     t->arr[index].busy = -1;
+    t->arr[index].info = NULL;
+    t->arr[index].key = NULL;
     return SUCCESS;
 }
 
@@ -150,7 +154,11 @@ void print_table(const Table *t) {
         } else {
             printf(" %-*s|", max_val - 1, t->arr[i].info);
         }
-        printf(" %d  |\n", t->arr[i].busy);
+        if (t->arr[i].busy == -1) {
+            printf(" %d |\n", t->arr[i].busy);
+        } else {
+            printf(" %d  |\n", t->arr[i].busy);
+        }
         print_separator(width);
     }
     printf("\n");
