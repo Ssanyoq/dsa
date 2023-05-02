@@ -13,4 +13,6 @@ void print_tree_opt(const Node *root);
 
 int spec_find_opt(const Node *root);
 
+int import_opt(Node **root);
+
 #endif

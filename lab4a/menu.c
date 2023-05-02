@@ -85,3 +85,81 @@ int spec_find_opt(Node *root) {
     free(border);
     return SUCCESS;
 }
+
+char *freadline(FILE *readfile) {
+    char *ptr = (char *)malloc(1 * sizeof(char));
+    char buf[256];
+
+    int n, len = 0, buf_len;
+    *ptr = '\0';
+    do {
+        n = fscanf(readfile, "%255[^\n]%n", buf, &buf_len);
+        if (n < 0) {
+            free(ptr);
+            ptr = NULL;
+            continue;
+        }
+        if (n == 0)
+            fscanf(readfile, "%*c");
+        else {
+            len += buf_len;
+            ptr = (char *)realloc(ptr, (len + 1) * sizeof(char));
+            strcat(ptr, buf);
+        }
+    } while (n > 0);
+    return ptr;
+}
+
+int import_opt(Node **root) {
+    char *filename = readline("Input name of file: ");
+    if (filename == NULL) {
+        return EOF;
+    }
+    FILE *readfile = fopen(filename, "r");
+    free(filename);
+    if (readfile == NULL){
+        return ERR;
+    }
+    // printf("file opened\n"); // DEBUG
+    char *marker;
+    char *str_part = freadline(readfile);
+    if (str_part == NULL) {
+        return EOF;
+    }
+    int len = strtol(str_part, &marker, 10); 
+    
+    if (marker == str_part) { // bad str to long
+        printf("File's length not found.\n");
+        free(str_part);
+        return ERR;
+    } else if (len < 0) {
+        printf("Bad number\n");
+        free(str_part);
+        return ERR;
+    }
+    free(str_part);
+
+    // printf("%d\n", t->max_size); // DEBUG
+    for (int i = 0; i < len; i++) {
+        char *key = freadline(readfile);
+        char *value = freadline(readfile);
+        if (key == NULL) {
+            break;
+        }
+        if (value == NULL) {
+            free(key);
+            break;
+        }
+        Node *new = malloc(sizeof(Node));
+        new->key = key;
+        new->val = value;
+        int out = insert(new, root);
+        if (out == ALREADY_EXISTS) {
+            printf("Element No.%d already exists, won't be included in the table\n", i + 1);
+            free(key);
+            free(value);
+        }
+    }
+    fclose(readfile);
+    return SUCCESS;
+}

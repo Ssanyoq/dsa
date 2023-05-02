@@ -15,7 +15,7 @@ int menu() {
     printf("3 - Print tree\n");
     printf("4 - Find node\n");
     printf("5 - Special find\n");
-    printf("6 - Import tree from file\n")
+    printf("6 - Import tree from file\n");
     printf("\n0 - Quit program\n");
     char t;
     int inp;
@@ -60,6 +60,8 @@ int main() {
             break;
         case 6:
             code = import_opt(&root);
+            printf("%p\n", root);
+            break;
         case -1:
             goto program_quit;
         case 0:
