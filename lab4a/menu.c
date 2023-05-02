@@ -68,6 +68,8 @@ void print_tree_opt(const Node *root) {
         return;
     }
     print_tree(root, l_border, r_border);
+    free(l_border);
+    free(r_border);
 }
 
 int spec_find_opt(Node *root) {
