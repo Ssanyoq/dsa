@@ -163,3 +163,15 @@ int import_opt(Node **root) {
     fclose(readfile);
     return SUCCESS;
 }
+
+void put_tree(Node *root, int level) {
+	int i = level;
+	if (root){
+		put_tree(root->right, level + 1);
+		while (i-- > 0)
+			printf("  ");
+		printf("%s\n", root->key);
+		put_tree(root->left, level + 1
+			);
+	}
+}

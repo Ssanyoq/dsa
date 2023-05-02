@@ -15,4 +15,6 @@ int spec_find_opt(const Node *root);
 
 int import_opt(Node **root);
 
+void put_tree(Node *root, int level);
+
 #endif

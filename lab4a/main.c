@@ -16,11 +16,12 @@ int menu() {
     printf("4 - Find node\n");
     printf("5 - Special find\n");
     printf("6 - Import tree from file\n");
+    printf("7 - Pretty print the tree\n");
     printf("\n0 - Quit program\n");
     char t;
     int inp;
     int out = scanf("%d%c", &inp, &t);
-    while (out != 2 || t != '\n' || inp < 0 || inp > 6) {
+    while (out != 2 || t != '\n' || inp < 0 || inp > 7) {
         if (out == -1){
             return -1;
         }
@@ -61,6 +62,10 @@ int main() {
         case 6:
             code = import_opt(&root);
             printf("%p\n", root);
+            break;
+        case 7:
+            put_tree(root, 0);
+            code = SUCCESS;
             break;
         case -1:
             goto program_quit;
