@@ -21,7 +21,6 @@ Node *find(Node *root, const char *key) {
 
 void print_tree(const Node *root, const char *l_border, const char *r_border) {
     // reversed order, [l, r]
-    printf("hey\n");
     if (root == NULL) {
         return;
     }
@@ -32,6 +31,8 @@ void print_tree(const Node *root, const char *l_border, const char *r_border) {
             print_tree(root->right, l_border, r_border);
         }
     }
+    printf("%s: %s\n", root->key, root->val);
+
     if (root->left != NULL) {
         if (strcmp(root->key, l_border) <= 0) {
             //no
@@ -39,7 +40,6 @@ void print_tree(const Node *root, const char *l_border, const char *r_border) {
             print_tree(root->left, l_border, r_border);
         }
     }
-    printf("%s: %s\n", root->key, root->val);
 }
 
 
@@ -59,6 +59,8 @@ int insert(Node *new, Node **root) {
         if ((*root)->right == NULL) {
             (*root)->right = new;
             new->par = (*root);
+            new->right = NULL;
+            new->left = NULL;
             return SUCCESS;
         }
         (*root) = (*root)->right;
@@ -66,6 +68,8 @@ int insert(Node *new, Node **root) {
         if ((*root)->left == NULL) {
             (*root)->left = new;
             new->par = (*root);
+            new->right = NULL;
+            new->left = NULL;
             return SUCCESS;
         }
         (*root) = (*root)->left;
@@ -156,9 +160,11 @@ Node *spec_find(Node *root, const char *border) {
     }
 }
 void free_node(Node *n) {
-    free(n->key);
-    free(n->val);
-    free(n);
+    if (n != NULL) {
+        free(n->key);
+        free(n->val);
+        free(n);
+    }
 }
 
 void free_tree(Node *root) {
