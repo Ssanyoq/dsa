@@ -43,7 +43,6 @@ int main() {
         {
         case 1:
             code = insert_opt(&root);
-            printf("%s\n", root->key);
             break;
         case 2:
             code = delete_opt(&root);
@@ -84,5 +83,6 @@ int main() {
         }
         inp = menu();
     }
+    free_tree(root);
     return 0;
 }
