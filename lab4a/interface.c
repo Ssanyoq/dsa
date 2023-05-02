@@ -63,7 +63,7 @@ int insert(Node *new, Node **root) {
             new->left = NULL;
             return SUCCESS;
         }
-        (*root) = (*root)->right;
+        root = &(*root)->right;
     } else {
         if ((*root)->left == NULL) {
             (*root)->left = new;
@@ -72,8 +72,9 @@ int insert(Node *new, Node **root) {
             new->left = NULL;
             return SUCCESS;
         }
-        (*root) = (*root)->left;
+        root = &(*root)->left;
     }
+    printf("iter\n");
     return insert(new, root);
 }
 
