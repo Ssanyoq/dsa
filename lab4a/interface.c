@@ -168,6 +168,9 @@ void free_node(Node *n) {
 }
 
 void free_tree(Node *root) {
+    if (root == NULL) {
+        return;
+    }
     if (root->right != NULL) {
         free_tree(root->right);
     }
