@@ -1,6 +1,9 @@
 #ifndef STRUCTS_H
 #define STRUCTS_H
 
+#define BLACK 0
+#define RED 1
+
 typedef struct Node {
     int color;
     struct Node *left;
