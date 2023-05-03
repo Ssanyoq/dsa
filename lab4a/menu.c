@@ -78,11 +78,12 @@ int spec_find_opt(Node *root) {
         return EOF;
     }
     Node *target = spec_find(root, border);
+    free(border);
     if (target == NULL) {
         return NOT_FOUND;
     }
     printf("Best one is: key = %s, value = %s\n", target->key, target->val);
-    free(border);
+
     return SUCCESS;
 }
 
