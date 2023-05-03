@@ -15,3 +15,6 @@ lib:
 
 with_lib:
 	$(CC) $(SOURCES) -lmap -Lbuild/ $(CFLAGS) -o $(EXEDIR)/$(EXENAME)
+
+t:
+	$(CC) $(LIBSOURCES) test.c $(CFLAGS) -o $(EXEDIR)/t
