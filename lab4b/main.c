@@ -35,3 +35,64 @@ int menu() {
     }
     return inp;
 }
+
+int main() {
+    int inp = menu();
+    Node *root = NULL;
+    int code;
+    while (inp != EOF) {
+        switch (inp)
+        {
+        case 1:
+            code = insert_opt(&root);
+            break;
+        case 2:
+            code = delete_opt(&root);
+            break;
+        case 3:
+            print_tree_opt(root);
+            code = SUCCESS;
+            break;
+        case 4:
+            code = find_opt(root);
+            break;
+        case 5:
+            code = spec_find_opt(root);
+            break;
+        case 6:
+            code = import_opt(&root);
+            printf("%p\n", root);
+            break;
+        case 7:
+            put_tree(root, 0);
+            code = SUCCESS;
+            break;
+        case -1:
+            goto program_quit;
+        case 0:
+            program_quit:
+            free_tree(root);
+            return 0;
+        }
+        switch (code)
+        {
+        case SUCCESS:
+            printf("Success\n");
+            break;
+        case NOT_FOUND:
+            printf("Element not found\n");
+            break;
+        case ERR:
+            printf("Error occurred\n");
+            break;
+        case ALREADY_EXISTS:
+            printf("Inputted element already exists\n");
+            break;
+        default:
+            break;
+        }
+        inp = menu();
+    }
+    free_tree(root);
+    return 0;
+}
