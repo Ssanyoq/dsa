@@ -5,8 +5,17 @@
 #define ERR 1
 #define SUCCESS 0
 #define NOT_FOUND -2
+#define EMPTY_TREE 1
 
 #include "structs.h"
+
+int insert(Node **root, Node *new);
+
+Node *find(Node *root, unsigned int key);
+
+Node *get_uncle(Node *target);
+
+Node *create_node();
 
 
 
