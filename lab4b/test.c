@@ -24,6 +24,11 @@ Node *create_tree() {
     root->key = 10;
     root->left->key = 5;
     root->left->left->key = 3;
+
+    root->color = BLACK;
+    root->left->color = RED;
+    root->left->left->color = BLACK;
+    // root->right->color = BLACK;
     return root;
 }
 
@@ -61,4 +66,6 @@ void test_find() {
 }
 
 int main() {
+    Node *root = create_tree();
+    print_tree(root, 0);
 }
