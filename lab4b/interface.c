@@ -70,7 +70,32 @@ Node *find(Node *root, unsigned int key) {
     return find(root, key);
 }
 
+#define STEP 2
 
+void print_tree(const Node *root, int level) {
+    int i = level;
+	if (root){
+		print_tree(root->right, level + STEP);
+		while (i-- > 0)
+			printf("  ");
+
+        if (root->color == RED) {
+            printf("\033[0;31m"); // sets red
+        } else if (root->color == BLACK) {
+            // printf("\033[0;35m"); // purple
+            printf("\033[0;30m"); // grey
+        }
+		printf("%u\n", root->key);
+        printf("\033[0m"); // resets color
+		print_tree(root->left, level + STEP);
+	} else {
+        while (i-- > 0)
+			printf("  ");
+        printf("\033[0;30m"); 
+        printf("nil\n");
+        printf("\033[0m");
+    }
+}
 
 
 Node *create_node() {
@@ -85,3 +110,14 @@ Node *create_node() {
 void free_node(Node *node) {
     free(node);
 }
+
+void free_tree(Node *root) {
+    if (root->left != NULL) {
+        free_tree(root->left);
+    }
+    if (root->right != NULL) {
+        free_tree(root->right);
+    }
+    free(root);
+}
+

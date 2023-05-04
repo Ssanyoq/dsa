@@ -15,8 +15,12 @@ Node *find(Node *root, unsigned int key);
 
 Node *get_uncle(Node *target);
 
+void print_tree(const Node *root, int level);
+
 Node *create_node();
 
+void free_node(Node *node);
 
+void free_tree(Node *root);
 
 #endif
