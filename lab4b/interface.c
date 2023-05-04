@@ -39,12 +39,11 @@ Node *rotate_left(Node *point, Node *root) {
     // returns tree's root
     Node *par = point->par;
     Node *y = point->right;
-    printf("hh\n");
+
     point->right = y->left;
     if (y->left != NULL) {
         y->left->par = point;
     }
-    printf("hsh\n");
     y->par = par;
     if (par == NULL) {
         root = y;
@@ -116,11 +115,52 @@ static int outlaw_insert(Node **root, Node *new) {
     return outlaw_insert(root, new);
 }
 
-static int insert_fixup(Node **root, Node *new) {
-    if (new == *root) {
-        new->color = BLACK;
-        return SUCCESS; 
+static int insert_fixup(Node **root, Node *x) {
+    x->color = RED;
+
+    while (get_color(x->par) == RED) {
+        Node *par = x->par;
+        Node *gp = x->par->par;
+        Node *uncle = get_uncle(x);
+        if (gp->left == par) {
+            if (get_color(uncle) == RED) {
+                // CASE 1
+                par->color = BLACK;
+                uncle->color = BLACK;
+                gp->color = RED;
+                x = gp; 
+                continue;
+            }
+            if (par->right == x) {
+                // CASE 2
+                *root = rotate_right(par, *root);
+            }
+            // CASE 3
+            par->color = BLACK;
+            gp->color = RED;
+            *root = rotate_right(gp, *root);
+            break;
+        } else {
+            if (get_color(uncle) == RED) {
+                // CASE 1
+                par->color = BLACK;
+                uncle->color = BLACK;
+                gp->color = RED;
+                x = gp; 
+                continue;
+            }
+            if (par->left == x) {
+                // CASE 2
+                *root = rotate_left(par, *root);
+            }
+            // CASE 3
+            par->color = BLACK;
+            gp->color = RED;
+            *root = rotate_left(gp, *root);
+            break;
+        }
     }
+    (*root)->color = BLACK;
 }
 
 int insert(Node **root, Node *new) {
@@ -128,14 +168,9 @@ int insert(Node **root, Node *new) {
     if (code != SUCCESS) {
         return code;
     }
-    
-    new->color = RED;
 
-    while (new->par->color == RED)
-    {
-        /* code */
-    }
-    
+    code = insert_fixup(root, new);
+
     return SUCCESS;
 }
 
