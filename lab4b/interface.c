@@ -73,6 +73,11 @@ Node *find(Node *root, unsigned int key) {
 #define STEP 2
 
 void print_tree(const Node *root, int level) {
+    /*
+        white -> node is black
+        red -> node is red
+        purple -> node has incorrect color
+    */
     int i = level;
 	if (root){
 		print_tree(root->right, level + STEP);
@@ -81,9 +86,9 @@ void print_tree(const Node *root, int level) {
 
         if (root->color == RED) {
             printf("\033[0;31m"); // sets red
-        } else if (root->color == BLACK) {
-            // printf("\033[0;35m"); // purple
-            printf("\033[0;30m"); // grey
+        } else if (root->color != BLACK) {
+            printf("\033[0;35m"); // purple
+            // printf("\033[0;30m"); // grey
         }
 		printf("%u\n", root->key);
         printf("\033[0m"); // resets color
@@ -91,9 +96,9 @@ void print_tree(const Node *root, int level) {
 	} else {
         while (i-- > 0)
 			printf("  ");
-        printf("\033[0;30m"); 
+        // printf("\033[0;30m"); 
         printf("nil\n");
-        printf("\033[0m");
+        // printf("\033[0m");
     }
 }
 
