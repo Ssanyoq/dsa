@@ -4,6 +4,13 @@
 #include <stdio.h>
 
 
+short get_color(const Node *p) {
+    if (p == NULL) {
+        return BLACK;
+    }
+    return p->color;
+}
+
 Node *get_uncle(Node *target) {
     if (target->par == NULL) {
         return NULL; // target - root

@@ -11,6 +11,8 @@
 
 Node *create_node();
 
+short get_color(const Node *p);
+
 Node *get_uncle(Node *target);
 
 Node *rotate_left(Node *point, Node *root);
