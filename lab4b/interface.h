@@ -9,15 +9,23 @@
 
 #include "structs.h"
 
+Node *create_node();
+
+Node *get_uncle(Node *target);
+
+Node *rotate_left(Node *point, Node *root);
+
+Node *rotate_right(Node *point, Node *root);
+
 int insert(Node **root, Node *new);
 
 Node *find(Node *root, unsigned int key);
 
-Node *get_uncle(Node *target);
+Node *find_smallest(Node *root, unsigned left_border);
 
 void print_tree(const Node *root, int level);
 
-Node *create_node();
+void print_in_order(Node *root, unsigned int left_border, short is_border);
 
 void free_node(Node *node);
 
