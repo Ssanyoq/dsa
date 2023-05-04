@@ -5,7 +5,7 @@
 #define RED 1
 
 typedef struct Node {
-    int color;
+    short color;
     struct Node *left;
     struct Node *right;
     struct Node *par;
