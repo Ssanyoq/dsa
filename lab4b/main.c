@@ -15,8 +15,7 @@ int menu() {
     printf("3 - Print tree\n");
     printf("4 - Find node\n");
     printf("5 - Special find\n");
-    printf("6 - Import tree from file\n");
-    printf("7 - Pretty print the tree\n");
+    printf("6 - Pretty print the tree\n");
     printf("\n0 - Quit program\n");
     char t;
     int inp;
@@ -56,15 +55,8 @@ int main() {
         case 4:
             code = find_opt(root);
             break;
-        case 5:
-            code = spec_find_opt(root);
-            break;
         case 6:
-            code = import_opt(&root);
-            printf("%p\n", root);
-            break;
-        case 7:
-            put_tree(root, 0);
+            print_tree(root, 0);
             code = SUCCESS;
             break;
         case -1:

@@ -161,6 +161,7 @@ static int insert_fixup(Node **root, Node *x) {
         }
     }
     (*root)->color = BLACK;
+    return SUCCESS;
 }
 
 int insert(Node **root, Node *new) {
@@ -171,6 +172,76 @@ int insert(Node **root, Node *new) {
 
     code = insert_fixup(root, new);
 
+    return code;
+}
+
+static int outlaw_delete(Node **root, unsigned int key) {
+    Node *target = find(*root, key);
+    if (target == NULL) {
+        return NOT_FOUND;
+    }
+
+    Node *par = target->par;
+    if (target->left == NULL && target->right == NULL) {
+        if (par == NULL) {
+            *root = NULL;
+        } else {
+            if (par->key > (*root)->key) { //  par
+                par->left = NULL;//             target/
+            } else {
+                par->right = NULL;
+            }
+        }
+    } else if (target->left == NULL) {
+        if (par == NULL) {
+            *root = target->right;
+        } else {
+            if (par->key > (*root)->key) {
+                par->left = target->right;
+            } else {
+                par->right = target->right;
+            }
+        }
+    } else if (target->right == NULL) {
+        if (par == NULL) {
+            *root = target->left;
+        } else {
+            if (par->key < (*root)->key) {
+                par->left = target->left;
+            } else {
+                par->right = target->left;
+            }
+        }
+    } else {
+        // closest bigger
+        Node *recipient = target->right;
+        while (recipient != NULL)
+        {
+            recipient = recipient->left;
+        }
+        if (par == NULL) {
+            *root = recipient;
+        } else if (par->key > (*root)->key) {
+            par->left = recipient;
+        } else {
+            par->right = recipient;
+        }
+        recipient->left = target->left;
+        recipient->right = target->right;
+        recipient->par = par;
+        
+    }
+    free_node(target);
+    return SUCCESS;
+}
+
+static int delete_fixup(Node **root){
+    return SUCCESS;
+}
+
+int delete(Node **root, unsigned int key) {
+    int code = outlaw_delete(root, key);
+    delete_fixup(root);
     return SUCCESS;
 }
 

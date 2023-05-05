@@ -21,6 +21,8 @@ Node *rotate_right(Node *point, Node *root);
 
 int insert(Node **root, Node *new);
 
+int delete(Node **root, unsigned int key);
+
 Node *find(Node *root, unsigned int key);
 
 Node *find_smallest(Node *root, unsigned left_border);
