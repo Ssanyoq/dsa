@@ -17,13 +17,19 @@ Node *create_tree() {
     root->right = create_node();
     root->left = create_node();
     root->left->left = create_node();
+    root->left->left->left = create_node();
+    root->left->left->right = create_node();
     root->right->par = root;
     root->left->par = root;
     root->left->left->par = root->left;
+    root->left->left->left->par = root->left->left;
+    root->left->left->right->par = root->left->left;
     root->right->key = 12;
     root->key = 10;
     root->left->key = 5;
     root->left->left->key = 3;
+    root->left->left->left->key = 1;
+    root->left->left->right->key = 4;
 
     root->color = BLACK;
     root->left->color = RED;
@@ -42,16 +48,27 @@ void test_get_uncle() {
 }
 
 void test_insert() {
-    Node *root = create_tree();
+    Node *root = NULL;
     Node *new = create_node();
+    new->key = 5;
+    insert(&root, new);
+    print_tree(root, 0);
     
+    new = create_node();
+    new->key = 4;
+    insert(&root, new);
+    print_tree(root, 0);
+
+    new = create_node();
     new->key = 3;
-    
-    int code = insert(&root, new);
-    printf("Code is %d\n", code);
-    if (code == SUCCESS) {
-        printf("Parent key is %d\n", new->par->key);
-    }
+    insert(&root, new);
+    print_tree(root, 0);
+
+    new = create_node();
+    new->key = 2;
+    insert(&root, new);
+    print_tree(root, 0);
+
 }
 
 void test_find() {
@@ -65,7 +82,17 @@ void test_find() {
     }
 }
 
-int main() {
+void test_find_smallest() {
     Node *root = create_tree();
+    Node *ans = find_smallest(root, 0);
     print_tree(root, 0);
+    if (ans == NULL) {
+        printf("NULL\n");
+    } else {
+        printf("%u\n", root->key);
+    }
+}
+
+int main() {
+    test_insert();
 }
