@@ -55,6 +55,9 @@ int main() {
         case 4:
             code = find_opt(root);
             break;
+        case 5:
+            code = spec_find_opt(root);
+            break;
         case 6:
             print_tree(root, 0);
             code = SUCCESS;

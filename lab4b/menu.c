@@ -72,6 +72,26 @@ int find_opt(Node *root) {
     return SUCCESS;
 }
 
+int spec_find_opt(Node *root) {
+    printf("Input left border: ");
+    int border;
+    int code;
+    while ((code = scanf("%d", &border)) != 1)
+    {
+        if (code == -1) {
+            return EOF;
+        }
+        fflush(stdin);
+    }
+    Node *ans = find_smallest(root, border);
+    if (ans == NULL) {
+        return NOT_FOUND;
+    }
+    printf("Node found!\n");
+    printf("Best key is %u\n", ans->key);
+    return SUCCESS;
+}
+
 void print_tree_opt(Node *root) {
     printf("Input left border: ");
     unsigned k;

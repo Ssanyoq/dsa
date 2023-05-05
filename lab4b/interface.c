@@ -336,8 +336,6 @@ void print_tree(const Node *root, int level) {
     }
 }
 
-
-
 void free_node(Node *node) {
     free(node);
 }
