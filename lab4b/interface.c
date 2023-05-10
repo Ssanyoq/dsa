@@ -175,7 +175,8 @@ int insert(Node **root, Node *new) {
     return code;
 }
 
-static int outlaw_delete(Node **root, unsigned int key) {
+static int outlaw_delete(Node **root, unsigned int key, Node **patch) {
+    *patch = NULL;
     Node *target = find(*root, key);
     if (target == NULL) {
         return NOT_FOUND;
@@ -229,18 +230,44 @@ static int outlaw_delete(Node **root, unsigned int key) {
         recipient->left = target->left;
         recipient->right = target->right;
         recipient->par = par;
+        *patch = recipient;
         
     }
     free_node(target);
     return SUCCESS;
 }
 
-static int delete_fixup(Node **root){
+static int delete_fixup(Node **root, Node *repl) {
+    while (1) {
+        if (repl->par != NULL && get_color(repl) = BLACK) {
+            Node *par = repl->par;
+            if (par->left == repl) {
+                Node *br = par->right;
+                if (get_color(br) == RED) {
+                    // case 1
+                    br->color = BLACK;
+                    repl->color == RED;
+                    *root = rotate_left(par, *root);
+                    br = par->right;
+                }
+                if (get_color(br->right) == BLACK && get_color(br->left) == BLACK) {
+                    br->color = RED;
+                    repl = par;
+                } else if (get_color(br->right) == BLACK) {
+                    br->color = RED;
+                    br->left->color = BLACK;
+                    *root = rotate_right(br, *root);
+                    br = par->right;
+                }
+            }
+        }
+    }
     return SUCCESS;
 }
 
 int delete(Node **root, unsigned int key) {
-    int code = outlaw_delete(root, key);
+    Node *patch;
+    int code = outlaw_delete(root, key, &patch);
     delete_fixup(root);
     return SUCCESS;
 }
@@ -341,6 +368,9 @@ void free_node(Node *node) {
 }
 
 void free_tree(Node *root) {
+    if (root == NULL) {
+        return;
+    }
     if (root->left != NULL) {
         free_tree(root->left);
     }
