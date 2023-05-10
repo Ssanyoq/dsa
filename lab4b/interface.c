@@ -239,7 +239,7 @@ static int outlaw_delete(Node **root, unsigned int key, Node **patch) {
 
 static int delete_fixup(Node **root, Node *repl) {
     while (1) {
-        if (repl->par != NULL && get_color(repl) = BLACK) {
+        if (repl->par != NULL && get_color(repl) == BLACK) {
             Node *par = repl->par;
             if (par->left == repl) {
                 Node *br = par->right;
@@ -251,16 +251,55 @@ static int delete_fixup(Node **root, Node *repl) {
                     br = par->right;
                 }
                 if (get_color(br->right) == BLACK && get_color(br->left) == BLACK) {
+                    // case 2
                     br->color = RED;
                     repl = par;
-                } else if (get_color(br->right) == BLACK) {
+                } else {
+                    if (get_color(br->right) == BLACK) {
+                    // case 3
                     br->color = RED;
                     br->left->color = BLACK;
                     *root = rotate_right(br, *root);
                     br = par->right;
+                    }
+                    br->color = get_color(par);
+                    par->color = BLACK;
+                    br->right->color = BLACK;
+                    *root = rotate_left(par, root);
+                    repl = root;
+                }
+            } else {
+                if (par->right == repl) {
+                Node *br = par->left;
+                if (get_color(br) == RED) {
+                    // case 1
+                    br->color = BLACK;
+                    repl->color == RED;
+                    *root = rotate_right(par, *root);
+                    br = par->left;
+                }
+                if (get_color(br->right) == BLACK && get_color(br->left) == BLACK) {
+                    // case 2
+                    br->color = RED;
+                    repl = par;
+                } else {
+                    if (get_color(br->left) == BLACK) {
+                    // case 3
+                    br->color = RED;
+                    br->right->color = BLACK;
+                    *root = rotate_left(br, *root);
+                    br = par->left;
+                    }
+                    br->color = get_color(par);
+                    par->color = BLACK;
+                    br->left->color = BLACK;
+                    *root = rotate_right(par, root);
+                    repl = root;
                 }
             }
+            }
         }
+        repl->color = BLACK;
     }
     return SUCCESS;
 }
@@ -268,7 +307,7 @@ static int delete_fixup(Node **root, Node *repl) {
 int delete(Node **root, unsigned int key) {
     Node *patch;
     int code = outlaw_delete(root, key, &patch);
-    delete_fixup(root);
+    delete_fixup(root, patch);
     return SUCCESS;
 }
 
