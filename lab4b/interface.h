@@ -15,9 +15,9 @@ short get_color(const Node *p);
 
 Node *get_uncle(Node *target);
 
-Node *rotate_left(Node *point, Node *root);
+// Node *rotate_left(Node *point, Node *root);
 
-Node *rotate_right(Node *point, Node *root);
+// Node *rotate_right(Node *point, Node *root);
 
 int insert(Node **root, Node *new);
 
