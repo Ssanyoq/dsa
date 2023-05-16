@@ -177,13 +177,16 @@ int insert(Node **root, Node *z)
 
 Node *rb_transplant(Node *root, Node *u, Node *v)
 {
-    if (u->par == NULL)
+    if (u == root)
         root = v;
+    else if (u->par == NULL) {
+    }
     else if (u == u->par->left)
         u->par->left = v;
     else
         u->par->right = v;
-    v->par = u->par;
+    if (v != NULL && u != NULL && v->par != NULL)
+        v->par = u->par;
     return root;
 }
 
@@ -261,7 +264,8 @@ void rb_delete_fixup(Node *root, Node *x)
             }
         }
     }
-    x->color = BLACK;
+    if (x != NULL)
+        x->color = BLACK;
 }
 
 int delete(Node **root, unsigned int key)
@@ -270,7 +274,6 @@ int delete(Node **root, unsigned int key)
     if (z == NULL) {
         return NOT_FOUND;
     }
-
     Node *y = z;
     Node *x;
     int y_orignal_color = get_color(y);
@@ -306,6 +309,7 @@ int delete(Node **root, unsigned int key)
     }
     if (y_orignal_color == BLACK)
         rb_delete_fixup(*root, x);
+    free_node(z);
     return SUCCESS;
 }
 

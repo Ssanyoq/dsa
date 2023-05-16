@@ -7,7 +7,7 @@ EXENAME = e
 EXEDIR = build
 
 default:
-	$(CC) $(SOURCES) $(LIBSOURCES) $(CFLAGS) -o $(EXEDIR)/$(EXENAME)
+	$(CC) $(SOURCES) -g $(LIBSOURCES) $(CFLAGS) -o $(EXEDIR)/$(EXENAME)
 
 lib:
 	gcc $(LIBSOURCES) -c -o build/int.o
