@@ -85,7 +85,7 @@ Node *rotate_left(Node *temp, Node *root)
 
 void insertion_fixup(Node *root, Node *z)
 {
-    while (z->par->color == RED)
+    while (get_color(z->par) == RED)
     {
         if (z->par == z->par->par->left)
         { // z.parent is the left child
@@ -140,7 +140,12 @@ void insertion_fixup(Node *root, Node *z)
 }
 
 int insert(Node **root, Node *z)
-{
+{   
+    z->left = NULL;
+    z->right = NULL;
+    z->color = RED;
+    z->par = NULL;
+    
     Node *y = NULL; // variable for the parent of the added node
     Node *temp = *root;
 
