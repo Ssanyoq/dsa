@@ -83,7 +83,7 @@ Node *rotate_left(Node *temp, Node *root)
     return root;
 }
 
-void insertion_fixup(Node *root, Node *z)
+Node *insertion_fixup(Node *root, Node *z)
 {
     while (get_color(z->par) == RED)
     {
@@ -137,6 +137,7 @@ void insertion_fixup(Node *root, Node *z)
         }
     }
     root->color = BLACK;
+    return root;
 }
 
 int insert(Node **root, Node *z)
@@ -145,7 +146,7 @@ int insert(Node **root, Node *z)
     z->right = NULL;
     z->color = RED;
     z->par = NULL;
-    
+
     Node *y = NULL; // variable for the parent of the added node
     Node *temp = *root;
 
@@ -171,7 +172,7 @@ int insert(Node **root, Node *z)
     z->right = NULL;
     z->left = NULL;
 
-    insertion_fixup(*root, z);
+    *root = insertion_fixup(*root, z);
     return SUCCESS;
 }
 
@@ -427,6 +428,8 @@ void print_tree(const Node *root, int level)
         printf("%u\n", root->key);
         printf("\033[0m"); // resets color
         print_tree(root->left, level + STEP);
+        if (level == 0) 
+            printf("%p\n", root->par); // FIXME:
     }
     else
     {
