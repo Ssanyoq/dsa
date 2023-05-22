@@ -3,10 +3,6 @@
 #include <stdio.h>
 #include <string.h>
 
-#define WHITE 0
-#define GREY 1
-#define BLACK 2
-
 Edge *delete_edge(Edge *list, Edge *target, Edge *par)
 {
     if (list == target)
@@ -217,7 +213,7 @@ void print_graph(const Graph *g)
         Edge *cur = g->vertices[i].edges;
         while (cur != NULL)
         {
-            printf(" -%u->", cur->attitude);
+            printf(" -[%hd]->", cur->attitude);
             if (cur->to->name == NULL)
             {
                 printf("NULL");

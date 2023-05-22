@@ -6,6 +6,10 @@
 #define SUCCESS 0
 #define NOT_FOUND -2
 
+#define WHITE 0
+#define GREY 1
+#define BLACK 2
+
 #include "structs.h"
 
 Edge *delete_edge(Edge *list, Edge *target, Edge *par);
