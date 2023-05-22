@@ -47,7 +47,7 @@ int add_vertex(Graph *g, const char *name) {
         return ALREADY_EXISTS;
     }
     g->len++;
-    g->vertices = realloc(g->vertices, g->len);
+    g->vertices = realloc(g->vertices, g->len * sizeof(Vertex));
     g->vertices[g->len - 1].name = strdup(name);
     g->vertices[g->len - 1].edges = NULL;
     return SUCCESS;
@@ -79,7 +79,7 @@ int add_edge(Graph *g, const char *from, const char *to, short attitude) {
     new->to = t;
     new->attitude = attitude;
     new->next = NULL;
-    if (cur == f->edges) {
+    if (f->edges == NULL) {
         f->edges = new;
     } else {
         cur->next = new;
@@ -175,6 +175,7 @@ int delete_vertex(Graph *g, const char *name)
 
 void dfs(const Graph *g, VerticesList *list_tail, int *colors, int depth, const int max_depth)
 {
+    printf("we're in\n");
     if (max_depth == depth)
     {
         return;
@@ -189,6 +190,7 @@ void dfs(const Graph *g, VerticesList *list_tail, int *colors, int depth, const 
             list_tail->next = malloc(sizeof(VerticesList));
             list_tail = list_tail->next;
             list_tail->next = NULL;
+            list_tail->cur = cur->to;
             colors[index] = GREY;
             dfs(g, list_tail, colors, depth + 1, max_depth);
             colors[index] = BLACK;
@@ -213,7 +215,7 @@ void print_graph(const Graph *g)
         Edge *cur = g->vertices[i].edges;
         while (cur != NULL)
         {
-            printf(" -[%hd]->", cur->attitude);
+            printf(" [%hd]->", cur->attitude);
             if (cur->to->name == NULL)
             {
                 printf("NULL");

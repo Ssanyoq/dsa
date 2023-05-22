@@ -55,7 +55,7 @@ int traverse(Graph *g) {
             free(name);
             return EOF;
         }
-    } while (depth > 0);
+    } while (depth < 0);
     VerticesList *out = malloc(sizeof(VerticesList));
     out->next = NULL;
     int *colors = malloc(sizeof(int) * g->len);
@@ -64,6 +64,13 @@ int traverse(Graph *g) {
     dfs(g, out, colors, 0, depth);
 
     free(colors);
+
+    VerticesList *cur = out;
+    while (cur != NULL) {
+        printf("%c ", cur->cur->name);
+        cur = cur->next;
+    }
+    printf("\n");
     free_list(out);
 
     return SUCCESS;
@@ -103,7 +110,7 @@ int add_edge_opt(Graph *g) {
     if (out == EOF) {
         return EOF;
     }
-    while (attitude > 10 || attitude < 10)
+    while (attitude > 10 || attitude < -10)
     {
         printf("Bad number, try again: ");
         out = input_hd(&attitude);
