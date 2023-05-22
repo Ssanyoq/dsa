@@ -8,10 +8,29 @@
 
 #include "structs.h"
 
-Vertex *find(Graph *g, const char *name);
+Edge *delete_edge(Edge *list, Edge *target, Edge *par);
 
+int get_index(const Graph *g, Vertex *target);
 
+Vertex *find(const Graph *g, const char *name);
 
+int add_vertex(Graph *g, const char *name);
+
+int add_edge(Graph *g, const char *from, const char *to, short attitude);
+
+int change_vertex(Graph *g, const char *cur_name, const char *new_name);
+
+int change_edge(Graph *g, const char *from, const char *to, short new_attitude);
+
+int delete_edge_by_names(Graph *g, const char *from, const char *to);
+
+int delete_vertex(Graph *g, const char *name);
+
+void dfs(const Graph *g, VerticesList *list_tail, int *colors, int depth, const int max_depth);
+
+void print_graph(const Graph *g);
+
+// free
 void free_edges(Edge *target);
 
 void free_graph(Graph *target);
