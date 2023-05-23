@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <limits.h>
 
 Edge *delete_edge(Edge *list, Edge *target, Edge *par)
 {
@@ -199,6 +200,66 @@ VerticesList *dfs(const Graph *g, VerticesList *list_tail, int *colors, int dept
         cur = cur->next;
     }
     return list_tail;
+}
+
+int min_dist(const int *dist, const int *shortest_set, int len) {
+    int min = INT_MAX;
+    int min_i = -1;
+    for (int i = 0; i < len; i++) {
+        if (!shortest_set[i] && dist[i] < min) {
+            min = dist[i];
+            min_i = i;
+        }
+    }
+    return min_i;
+}
+
+int *shortest_path(const Graph *g, const char *src) {
+    int index = get_index(g, find(g, src));
+    if (index == NOT_FOUND) {
+        return NULL;
+    }
+    int *dist = malloc(sizeof(int) * g->len); // min dist from src to ith vertex
+    int *shortest_set = malloc(sizeof(int) * g->len); // was processed or not
+    int *shortest_indices = malloc(sizeof(int) * g->len); // last vertex index in shortest path to ith vertex
+    for (int i = 0; i < g->len; i++) {
+        dist[i] = INT_MAX;
+        shortest_set[i] = 0;   
+        shortest_indices[i] = -1;
+    }
+    dist[index] = 0;
+
+    for (int i = 0; i < g->len - 1; i++) {
+        int mn_i = min_dist(dist, shortest_set, g->len);
+        shortest_set[mn_i] = 1;
+
+        for (int j = 0; j < g->len; j++) {
+            Edge *cur = g->vertices[mn_i].edges;
+            short are_connected = 0;
+            while (cur != NULL)
+            {
+                if (cur->to == &(g->vertices[j]) && cur->attitude > 0) {
+                    are_connected = 1;
+                    break;
+                }
+                cur = cur->next;
+            }
+            if (are_connected && !shortest_set[j] && dist[mn_i] != INT_MAX && dist[mn_i] + 1 < dist[j]) {
+                dist[j] = dist[mn_i] + 1;
+                shortest_indices[j] = mn_i;
+            }
+            
+        }
+    }
+
+    // for (int i = 0; i < g->len; i++) {
+    //     printf("%d: %d\n", dist[i], shortest_set[i]);
+    // }
+    // printf("\n");
+
+    free(dist);
+    free(shortest_set);
+    return shortest_indices;
 }
 
 void print_graph(const Graph *g)

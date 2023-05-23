@@ -80,6 +80,42 @@ int traverse(Graph *g) {
 }
 
 int shortest_opt(Graph *g) {
+    char *name = readline("Input first person: ");
+    if (name == NULL) {
+        return EOF;
+    }
+    char *target = readline("Input second person: ");
+    if (target == NULL) {
+        free(name);
+        return EOF;
+    }
+    int index = get_index(g, find(g, target));
+    if (index == NOT_FOUND) {
+        return NOT_FOUND;
+    }
+
+    int *shortest_indices = shortest_path(g, name);
+    if (shortest_indices == NULL) {
+        return NOT_FOUND;
+    }
+    if (shortest_indices[index] == -1) {
+        printf("You can't get from %s to %s, at least with >0 attitude\n", name, target);
+    } else {
+        int cur = shortest_indices[index];
+        printf("· %s\n", g->vertices[index].name);
+        while (strcmp(g->vertices[cur].name, name) != 0) {
+            printf("↑ %s\n", g->vertices[cur].name);
+            cur = shortest_indices[cur];
+        }
+        printf("· %s\n", name);
+        
+    }
+    // for (int i = 0; i < g->len; i++) {
+    //     printf("%d\n", shortest_indices[i]); // DEBUG
+    // }
+    free(shortest_indices);
+    free(name);
+    free(target);
     return SUCCESS;
 }
 
@@ -186,7 +222,7 @@ int change_edge_opt(Graph *g) {
     if (out == EOF) {
         return EOF;
     }
-    while (attitude > 10 || attitude < 10)
+    while (attitude > 10 || attitude < -10)
     {
         printf("Bad number, try again: ");
         out = input_hd(&attitude);

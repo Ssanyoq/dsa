@@ -33,6 +33,8 @@ int delete_vertex(Graph *g, const char *name);
 
 VerticesList *dfs(const Graph *g, VerticesList *list_tail, int *colors, int depth, const int max_depth);
 
+int *shortest_path(const Graph *g, const char *src);
+
 void print_graph(const Graph *g);
 
 // free
