@@ -242,7 +242,6 @@ VerticesList *dfs(const Graph *g, VerticesList *list_tail, int *colors, int dept
 
 void fill_order(const Graph *g, int i, int *visited, Stack *s) {
     // ~dfs
-
     visited[i] = 1;
     Edge *cur = g->vertices[i].edges;
     while (cur != NULL) {
@@ -250,6 +249,7 @@ void fill_order(const Graph *g, int i, int *visited, Stack *s) {
         if (!visited[index]) {
             fill_order(g, index, visited, s);
         }
+        cur = cur->next;
     }
     
     push(s, i);
@@ -335,6 +335,7 @@ int *shortest_path(const Graph *g, const char *src) {
 Graph *get_transposed(const Graph *g) {
     // Transposes graph
     // a -> b = a <- b
+    printf("in\n");
     Graph *new = malloc(sizeof(Graph));
     new->len = g->len;
     new->max_len = g->max_len;
@@ -349,6 +350,7 @@ Graph *get_transposed(const Graph *g) {
             add_edge(new, cur->to->name, g->vertices[i].name, cur->attitude);
         }
     }
+    printf("out\n");
     return new;
 }
 
