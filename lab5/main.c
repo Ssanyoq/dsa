@@ -47,7 +47,6 @@ int main() {
     g->vertices = malloc(LIMIT * sizeof(Vertex));
     g->max_len = LIMIT;
     g->len = 0;
-    g->vertices = NULL;
     int code;
     while (inp != EOF) {
         switch (inp)

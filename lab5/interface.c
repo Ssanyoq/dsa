@@ -176,7 +176,6 @@ int delete_vertex(Graph *g, const char *name)
 
 VerticesList *dfs(const Graph *g, VerticesList *list_tail, int *colors, int depth, const int max_depth)
 {
-    printf("we're in\n");
     if (max_depth == depth)
     {
         return list_tail;
@@ -186,14 +185,13 @@ VerticesList *dfs(const Graph *g, VerticesList *list_tail, int *colors, int dept
     for (; cur != NULL;)
     {
         int index = get_index(g, cur->to);
-        printf("%s, %d\n", cur->to->name, colors[index]);
         if (colors[index] == WHITE)
         {
             list_tail->next = malloc(sizeof(VerticesList));
             list_tail = list_tail->next;
             list_tail->next = NULL;
             list_tail->cur = cur->to;
-            printf("%s\n", list_tail->cur->name);
+            // printf("%s\n", list_tail->cur->name); // DEBUG
             colors[index] = GREY;
             list_tail = dfs(g, list_tail, colors, depth + 1, max_depth);
             colors[index] = BLACK;

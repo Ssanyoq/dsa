@@ -59,10 +59,13 @@ int traverse(Graph *g) {
     VerticesList *out = malloc(sizeof(VerticesList));
     out->next = NULL;
     int *colors = malloc(sizeof(int) * g->len);
+    for (int i = 0; i < g->len; i++) {
+        colors[i] = WHITE;
+    }
     out->cur = v;
     colors[get_index(g, v)] = BLACK;
     dfs(g, out, colors, 0, depth);
-
+    free(name);
     free(colors);
 
     VerticesList *cur = out;
