@@ -25,4 +25,10 @@ typedef struct Graph
     Vertex *vertices;
 } Graph;
 
+typedef struct Stack {
+    int max_len;
+    int len; // top is [len - 1]
+    int *elems;
+} Stack;
+
 #endif
