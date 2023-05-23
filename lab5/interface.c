@@ -4,6 +4,41 @@
 #include <string.h>
 #include <limits.h>
 
+// STACK
+
+int push(Stack *s, int new) {
+    if (s->len == s->max_len) {
+        return OVERFLOW;
+    }
+    s->elems[s->len] = new;
+    s->len++;
+    return SUCCESS;
+}
+
+int pop(Stack *s, int *place) {
+    if (s->len == 0) {
+        return EMPTY;
+    }
+    *place = s->elems[s->len - 1];
+    s->len--;
+    return SUCCESS;
+}
+
+Stack *init_stack(int max_len) {
+    Stack *s = malloc(sizeof(Stack));
+    s->len = 0;
+    s->max_len = max_len;
+    s->elems = malloc(max_len * sizeof(int));
+    return s;
+}
+
+void free_stack(Stack *s) {
+    free(s->elems);
+    free(s);
+}
+
+// END OF STACK
+
 Edge *delete_edge(Edge *list, Edge *target, Edge *par)
 {
     if (list == target)
@@ -175,6 +210,9 @@ int delete_vertex(Graph *g, const char *name)
     return SUCCESS;
 }
 
+
+// DFS
+
 VerticesList *dfs(const Graph *g, VerticesList *list_tail, int *colors, int depth, const int max_depth)
 {
     if (max_depth == depth)
@@ -183,7 +221,7 @@ VerticesList *dfs(const Graph *g, VerticesList *list_tail, int *colors, int dept
     }
     Vertex *target = list_tail->cur;
     Edge *cur = target->edges;
-    for (; cur != NULL;)
+    while (cur != NULL)
     {
         int index = get_index(g, cur->to);
         if (colors[index] == WHITE)
@@ -201,6 +239,38 @@ VerticesList *dfs(const Graph *g, VerticesList *list_tail, int *colors, int dept
     }
     return list_tail;
 }
+
+void fill_order(const Graph *g, int i, int *visited, Stack *s) {
+    // ~dfs
+
+    visited[i] = 1;
+    Edge *cur = g->vertices[i].edges;
+    while (cur != NULL) {
+        int index = get_index(g, cur->to);
+        if (!visited[index]) {
+            fill_order(g, index, visited, s);
+        }
+    }
+    
+    push(s, i);
+}
+
+void dfs_print(const Graph *g, int i, int *visited) {
+    visited[i] = 1;
+    printf("%s ", g->vertices[i].name);
+    Edge *cur = g->vertices[i].edges;
+    while (cur != NULL)
+    {
+        int index = get_index(g, cur->to);
+        if (!visited[index]) {
+            dfs_print(g, index, visited);
+        }
+    }
+    
+}
+
+// END OF DFS
+
 
 int min_dist(const int *dist, const int *shortest_set, int len) {
     int min = INT_MAX;
@@ -260,6 +330,60 @@ int *shortest_path(const Graph *g, const char *src) {
     free(dist);
     free(shortest_set);
     return shortest_indices;
+}
+
+Graph *get_transposed(const Graph *g) {
+    // Transposes graph
+    // a -> b = a <- b
+    Graph *new = malloc(sizeof(Graph));
+    new->len = g->len;
+    new->max_len = g->max_len;
+    new->vertices = malloc(sizeof(Vertex) * g->max_len);
+    for (int i = 0; i < new->len; i++) {
+        add_vertex(new, g->vertices[i].name);
+    }
+    for (int i = 0; i < new->len; i++) {
+        Edge *cur = g->vertices[i].edges;
+        while (cur != NULL)
+        {
+            add_edge(new, cur->to->name, g->vertices[i].name, cur->attitude);
+        }
+    }
+    return new;
+}
+
+void scc(const Graph *g) {
+    // strongly connected components
+    // prints all
+    Stack *s = init_stack(g->len);
+    int *visited = malloc(sizeof(int) * g->len);
+    for (int i = 0; i < g->len; i++) {
+        visited[i] = 0;
+    }
+
+    for (int i = 0; i < g->len; i++) {
+        if (!visited[i]) {
+            fill_order(g, i, visited, s);
+        }
+    }
+
+    Graph *trans = get_transposed(g);
+
+    for (int i = 0; i < g->len; i++) {
+        visited[i] = 0;
+    }
+    
+    while (s->len != 0) {
+        int v;
+        pop(s, &v);
+        if (!visited[v]) {
+            dfs_print(g, v, visited);
+            printf("\n");
+        }
+    }
+
+    free_stack(s);
+    free_graph(trans);
 }
 
 void print_graph(const Graph *g)
