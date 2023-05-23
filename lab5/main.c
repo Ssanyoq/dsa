@@ -5,6 +5,8 @@
 #include "structs.h"
 #include "menu.h"
 
+#define LIMIT 1000
+
 int menu() {
     // -1: EOF
     // 0-7: Option has been chosen
@@ -42,6 +44,8 @@ int menu() {
 int main() {
     int inp = menu();
     Graph *g = malloc(sizeof(Graph));
+    g->vertices = malloc(LIMIT * sizeof(Vertex));
+    g->max_len = LIMIT;
     g->len = 0;
     g->vertices = NULL;
     int code;
@@ -99,6 +103,9 @@ int main() {
             break;
         case ALREADY_EXISTS:
             printf("Inputted name or edge already exists\n");
+            break;
+        case OVERFLOW:
+            printf("Not enough memory allocated for new element\n");
             break;
         default:
             break;

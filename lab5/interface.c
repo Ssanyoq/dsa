@@ -46,8 +46,10 @@ int add_vertex(Graph *g, const char *name) {
     if (f != NULL) {
         return ALREADY_EXISTS;
     }
+    if (g->max_len == g->len) {
+        return OVERFLOW;
+    }
     g->len++;
-    g->vertices = realloc(g->vertices, g->len * sizeof(Vertex));
     g->vertices[g->len - 1].name = strdup(name);
     g->vertices[g->len - 1].edges = NULL;
     return SUCCESS;
@@ -169,33 +171,36 @@ int delete_vertex(Graph *g, const char *name)
     g->vertices[index].name = g->vertices[g->len - 1].name;
     g->vertices[index].edges = g->vertices[g->len - 1].edges;
     g->len--;
-    g->vertices = realloc(g->vertices, g->len * sizeof(Vertex));
     return SUCCESS;
 }
 
-void dfs(const Graph *g, VerticesList *list_tail, int *colors, int depth, const int max_depth)
+VerticesList *dfs(const Graph *g, VerticesList *list_tail, int *colors, int depth, const int max_depth)
 {
     printf("we're in\n");
     if (max_depth == depth)
     {
-        return;
+        return list_tail;
     }
     Vertex *target = list_tail->cur;
     Edge *cur = target->edges;
-    for (int i = 0; cur != NULL; i++)
+    for (; cur != NULL;)
     {
         int index = get_index(g, cur->to);
+        printf("%s, %d\n", cur->to->name, colors[index]);
         if (colors[index] == WHITE)
         {
             list_tail->next = malloc(sizeof(VerticesList));
             list_tail = list_tail->next;
             list_tail->next = NULL;
             list_tail->cur = cur->to;
+            printf("%s\n", list_tail->cur->name);
             colors[index] = GREY;
-            dfs(g, list_tail, colors, depth + 1, max_depth);
+            list_tail = dfs(g, list_tail, colors, depth + 1, max_depth);
             colors[index] = BLACK;
         }
+        cur = cur->next;
     }
+    return list_tail;
 }
 
 void print_graph(const Graph *g)

@@ -21,6 +21,7 @@ typedef struct Edge {
 typedef struct Graph
 {
     unsigned len;
+    unsigned max_len;
     Vertex *vertices;
 } Graph;
 

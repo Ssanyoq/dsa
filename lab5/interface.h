@@ -5,6 +5,7 @@
 #define ERR 1
 #define SUCCESS 0
 #define NOT_FOUND -2
+#define OVERFLOW 3
 
 #define WHITE 0
 #define GREY 1
@@ -30,7 +31,7 @@ int delete_edge_by_names(Graph *g, const char *from, const char *to);
 
 int delete_vertex(Graph *g, const char *name);
 
-void dfs(const Graph *g, VerticesList *list_tail, int *colors, int depth, const int max_depth);
+VerticesList *dfs(const Graph *g, VerticesList *list_tail, int *colors, int depth, const int max_depth);
 
 void print_graph(const Graph *g);
 

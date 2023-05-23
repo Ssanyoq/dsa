@@ -67,7 +67,7 @@ int traverse(Graph *g) {
 
     VerticesList *cur = out;
     while (cur != NULL) {
-        printf("%c ", cur->cur->name);
+        printf(" %s ", cur->cur->name);
         cur = cur->next;
     }
     printf("\n");
