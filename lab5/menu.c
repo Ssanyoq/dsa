@@ -120,6 +120,7 @@ int shortest_opt(Graph *g) {
 }
 
 int special_opt(Graph *g) {
+    scc(g);
     return SUCCESS;
 }
 
