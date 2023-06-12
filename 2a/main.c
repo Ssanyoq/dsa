@@ -2,7 +2,7 @@
 #include "list_queue.h"
 #endif
 #ifdef VECTOR
-#include "vector_queue.h"
+#include "../2b/vector_queue.h"
 #endif
 
 #include "queue.h"
